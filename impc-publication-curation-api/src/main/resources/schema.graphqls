@@ -1,0 +1,157 @@
+schema {
+    query : Query
+    mutation: Mutation
+}
+
+type Query {
+    publications(start: Int, size: Int, reviewed: Boolean, falsePositive: Boolean, keywords: [String], consortiumPaper: Boolean, alleles: Boolean, cites: Boolean): [Publication]
+    publication(id: String): Publication
+    publicationByPmid(pmid: String): Publication
+    publicationsByReviewed(reviewed: Boolean, start: Int, size: Int): [Publication]
+    count(reviewed: Boolean, falsePositive: Boolean, keywords: [String], consortiumPaper: Boolean, alleles: Boolean, cites: Boolean): Int
+}
+
+type Mutation {
+    updateReviewed(pmid: String!, reviewed: Boolean, alleles: [AlleleRefInput], falsePositive: Boolean, consortiumPaper: Boolean, alleleCandidates: [AlleleRefInput]): Publication
+}
+
+type Publication {
+    id: String
+    title: String
+    pmid: String
+    pmcid: String
+    doi: String
+    authorString: String
+    pubYear: String
+    pageInfo: String
+    abstractText: String
+    journalInfo: JournalInfo
+    authorList: [Author]
+    grantsList: [Grant]
+    fullTextUrlList: [FullTextUrl]
+    alleles: [AlleleRef]
+    datasource: String
+    reviewed: Boolean
+    falsePositive: Boolean
+    fragments: Fragments
+    citations: [Citation]
+    cites: [String]
+    keyword: String
+    firstPublicationDate: String
+    alleleCandidates: [AlleleRef]
+    consortiumPaper: Boolean
+    correspondence: [Correspondence]
+}
+
+type Correspondence {
+    authors: [String],
+    emails: [String]
+}
+
+
+
+input PublicationFilter {
+    id: String
+    title: String
+    pmid: String
+    pmcid: String
+    doi: String
+    authorString: String
+    pubYear: String
+    pageInfo: String
+    abstractText: String
+    datasource: String
+    reviewed: Boolean
+    falsePositive: Boolean
+    keyword: String
+    firstPublicationDate: String
+    authorList: [AuthorFilter]
+    consortiumPaper: Boolean
+}
+
+input AuthorFilter {
+    fullName: String
+    firstName: String
+    lastName: String
+    initials: String
+    affiliation: String
+}
+
+type JournalInfo {
+    issue: String
+    volume: String
+    journalIssueId: String
+    dateOfPublication: String
+    monthOfPublication: String
+    yearOfPublication: String
+    printPublicationDate: String
+    journal: Journal
+}
+
+type Journal {
+    title: String
+    medlineAbbreviation: String
+    essn: String
+    issn: String
+    isoabbreviation: String
+    nlmid: String
+}
+
+type Grant {
+    grantId: String
+    agency: String
+    acronym: String
+}
+
+type Author {
+    fullName: String
+    firstName: String
+    lastName: String
+    initials: String
+    affiliation: String
+}
+
+type AlleleRef {
+    acc: String
+    gacc: String
+    geneSymbol: String
+    project: String
+    alleleName: String
+    alleleSymbol: String
+}
+
+input AlleleRefInput{
+    acc: String
+    gacc: String
+    geneSymbol: String
+    project: String
+    alleleName: String
+    alleleSymbol: String
+}
+
+type FullTextUrl {
+    availabilty: String
+    documentStyle: String
+    site: String
+    url: String
+}
+
+type Fragments {
+    EUCOMM: [String]
+    KOMP: [String]
+    INFRAFRONTIER: [String]
+    JAX: [String]
+    IMPC: [String]
+    EMMA: [String]
+    alleles: [AlleleMention]
+}
+
+type AlleleMention {
+    alleleSymbol: String
+    mentions: [String]
+}
+
+type Citation {
+  pmid: String
+  references: [String]
+}
