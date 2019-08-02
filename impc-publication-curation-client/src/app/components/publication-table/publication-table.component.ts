@@ -1,4 +1,5 @@
 import { FilterService } from './../../shared/services/filter.service';
+import { ngxCsv } from 'ngx-csv/ngx-csv';
 import { Publication } from '../../shared/models/publication.model';
 import {
   AfterViewInit,
@@ -124,5 +125,31 @@ export class PublicationTableComponent implements AfterViewInit, OnInit {
       active: this.sortActive,
       direction: this.sortDirection as SortDirection
     });
+  }
+
+  downloadCsv() {
+    this.publicationService
+      .getPublications(0, this.resultsLength, {
+        ...this.filter,
+        ...this.filterService.filter
+      })
+      .subscribe(publications => {
+        const csvPublications = publications.map(publication => {
+          const csvPublication: any = {};
+          csvPublication.orderId = publication.orderId
+            ? publication.orderId
+            : '';
+          csvPublication.pmid = publication.pmid;
+          csvPublication.title = publication.title;
+          csvPublication.alleles = publication.alleles
+            .map(allele => allele.alleleSymbol)
+            .join('; ');
+          return csvPublication;
+        });
+        const csv = new ngxCsv(csvPublications, 'My Report', {
+          showLabels: true,
+          headers: ['Order ID', 'pmid', 'title', 'alleles']
+        });
+      });
   }
 }

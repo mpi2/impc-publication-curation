@@ -17,8 +17,6 @@
   max-width: 90%;
   margin-left: auto;
   margin-right: auto;
-  display: flex;
-  justify-content: space-between;
 }
 
 .loading-shade {
@@ -64,10 +62,6 @@
   text-align: center;
 }
 
-
-.table-tools {
-  position: fixed;
-  top: 200px;
-  right: 20px;
+.sorting-button {
+  line-height: 60px;
 }
-

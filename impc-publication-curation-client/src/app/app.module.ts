@@ -38,6 +38,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { PublicationCardComponent } from './components/publication-card/publication-card.component';
 import { FragmentViewerComponent } from './components/fragment-viewer/fragment-viewer.component';
 import { KeepHtmlPipe } from './shared/pipes/keep-html.pipe';
@@ -103,7 +104,8 @@ import { FooterComponent } from './components/footer/footer.component';
     MatButtonToggleModule,
     MatInputModule,
     MatCheckboxModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    FlexLayoutModule
   ],
   providers: [
     PublicationService,
