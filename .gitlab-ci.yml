@@ -5,11 +5,13 @@ build:
  image: trion/ng-cli
 
  before_script:
+  - apk add --update curl && rm -rf /var/cache/apk/*
   - 'which ssh-agent || ( apt-get install -qq openssh-client )'
   - eval $(ssh-agent -s)
   - ssh-add <(echo "$SSH_PRIVATE_KEY")
   - mkdir -p ~/.ssh
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  - curl $TEST_URL
   - cd impc-publication-curation-client/
   - npm ci
 
