@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  baseUrl: '/',
   publicationsApiUrl: 'http://localhost:8080/graphql',
   alleleApiUrl: 'http://localhost:8080/alleles',
   authUrl: 'http://localhost:8080/token/generate-token',

@@ -19,7 +19,7 @@
               <span *ngFor="let author of correspondence.authors; let i=index">{{ author }}<span *ngIf="i < correspondence.authors.length - 1">,&nbsp;</span>
             </span>&nbsp;
           </a> <span *ngIf="!showActions">
-            <mat-icon>mail</mat-icon>
+            <mat-icon class="fulltext-icon">mail</mat-icon>
             <span *ngFor="let author of correspondence.authors; let i=index">{{author}}<span *ngIf="i < correspondence.authors.length - 1">,&nbsp;</span>
           </span>
         </span>

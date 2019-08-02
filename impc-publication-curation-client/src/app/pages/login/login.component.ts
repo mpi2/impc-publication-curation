@@ -18,6 +18,8 @@ export class LoginComponent implements OnInit {
 
   title = '';
 
+  baseUrl = '';
+
   userNameFormControl = new FormControl('', [
     Validators.required
   ]);
@@ -30,6 +32,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.title = environment.title;
+    this.baseUrl = environment.baseUrl;
   }
 
   login() {

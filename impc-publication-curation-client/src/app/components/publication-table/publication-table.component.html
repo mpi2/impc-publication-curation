@@ -1,4 +1,4 @@
-<div class="container" id="tableTop" *ngIf="!notFound">
+<div class="container" id="tableTop" [hidden]="notFound">
   <div class="loading-shade"
   *ngIf="isLoadingResults">
   <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
@@ -50,6 +50,6 @@ matSort matSortActive="created" matSortDisableClear matSortDirection="desc" aria
 </mat-paginator>
 </div>
 </div>
-<div *ngIf="notFound" class="not-found-alert">
+<div [hidden]="!notFound" class="not-found-alert">
   <h2>NO PUBLICATIONS FOUND</h2>
 </div>

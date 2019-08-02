@@ -4,6 +4,7 @@
 
 export const environment = {
   production: true,
+  baseUrl: '/mi/infrafrontier/publications/',
   publicationsApiUrl: '/api/graphql',
   alleleApiUrl: '/api/alleles',
   authUrl: '/api/token/generate-token',

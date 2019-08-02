@@ -14,6 +14,7 @@ export class MainComponent implements OnInit{
 
   filters = environment.filters;
   isLoggedIn = false;
+  baseUrl = '/';
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -27,6 +28,7 @@ export class MainComponent implements OnInit{
   ngOnInit(): void {
     this.isLoggedIn = this.authService.isLoggedIn();
     this.authService.loggedOut.subscribe(() => this.isLoggedIn = false);
+    this.baseUrl = environment.baseUrl;
   }
 
   logout() {
