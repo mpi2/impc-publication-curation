@@ -1,10 +1,7 @@
-spring.data.solr.host=https://www.ebi.ac.uk/mi/impc/solr/
 spring.data.mongodb.database=infrafrontier
-spring.data.mongodb.uri=mongodb://localhost:27017/publications
-graphiql.endpoint=graphql
-graphiql.mapping=graphiql
-graphiql.enabled=true
+spring.data.mongodb.uri=mongodb:/localhost:2027
 graphql.servlet.corsEnabled=true
 graphql.servlet.enabled=true
 graphql.servlet.mapping=/graphql
+graphql.servlet.exception-handlers-enabled=true
 logging.level.org.springframework.data.mongodb.core.MongoTemplate=DEBUG

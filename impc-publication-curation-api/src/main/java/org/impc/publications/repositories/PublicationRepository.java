@@ -1,6 +1,7 @@
 package org.impc.publications.repositories;
 
 import org.bson.types.ObjectId;
+import org.impc.publications.models.Journal;
 import org.impc.publications.models.Publication;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

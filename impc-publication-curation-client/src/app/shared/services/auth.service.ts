@@ -1,28 +1,35 @@
 import { TokenStorage } from './token-storage.service';
 import { HttpClient } from '@angular/common/http';
-import { environment } from './../../../environments/environment';
-import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
+import { Injectable, EventEmitter } from '@angular/core';
 
 @Injectable()
 export class AuthService {
 
   loggedIn = false;
+  loggedOut: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(private _http: HttpClient, private _tokenStorage: TokenStorage) { }
+  constructor(private http: HttpClient, private tokenStorage: TokenStorage) { }
 
   login(user) {
-    return this._http.post(environment.impcAuthUrl, user).toPromise().then(data => {
-      this._tokenStorage.saveToken(data['token']);
+    return this.http.post(environment.authUrl, user).toPromise().then((data: TokenResponse) => {
+      this.tokenStorage.saveToken(data.token);
       this.loggedIn = true;
     });
   }
 
   isLoggedIn() {
-    return !!this._tokenStorage.getToken();
+    return !!this.tokenStorage.getToken();
   }
 
   logout() {
-    this._tokenStorage.signOut();
+    this.tokenStorage.signOut();
+    this.loggedOut.emit(false);
   }
 
+}
+
+
+interface TokenResponse {
+  token: any;
 }

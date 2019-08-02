@@ -1,104 +1,116 @@
-import { PublicationNotLoggedInComponent } from './components/publication/publication-not-loggedin-alert.component';
-import { KeepHtmlPipe } from './shared/pipes/keep-html.pipe';
+import { TokenInterceptor } from './shared/services/interceptor.service';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { AuthService } from './shared/services/auth.service';
+import { FilterService } from './shared/services/filter.service';
 import { AlleleAutocompleteService } from './shared/services/allele-autocomplete.service';
-import { FragmentsService } from './shared/services/fragments.service';
+import { KeywordListComponent } from './components/keyword-list/keyword-list.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {
-  MatToolbarModule,
-  MatIconModule,
-  MatButtonToggleModule,
-  MatChipsModule,
-  MatCardModule,
-  MatButtonModule,
-  MatStepperModule,
-  MatPaginatorModule,
-  MatSidenavModule,
-  MatListModule,
-  MatCheckboxModule,
-  MatSnackBarModule,
-  MatTooltipModule,
-  MatExpansionModule
-} from '@angular/material';
+
 import { AppRoutingModule } from './app-routing.module';
-
-import { NgxCarouselModule } from 'ngx-carousel';
-
 import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MainComponent } from './layouts/main/main.component';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatTabsModule } from '@angular/material/tabs';
 import { HomeComponent } from './pages/home/home.component';
-import { HeadBarComponent } from './components/head-bar/head-bar.component';
-import { LogoComponent } from './components/logo/logo.component';
-import { FooterComponent } from './components/footer/footer.component';
-import { StatusFilterComponent } from './components/status-filter/status-filter.component';
-import { CountComponent } from './components/count/count.component';
-import { PublicationListComponent } from './components/publication-list/publication-list.component';
-import { PublicationComponent } from './components/publication/publication.component';
-import { FragmentExplorerComponent } from './components/fragment-explorer/fragment-explorer.component';
-import { PublicationKeywordListComponent } from './components/publication-keyword-list/publication-keyword-list.component';
-import { MatFormFieldModule } from '@angular/material';
-import { MatInputModule, MatAutocompleteModule } from '@angular/material';
-import { PublicationAlleleAdderComponent } from './components//publication-allele-adder/publication-allele-adder.component';
-import { PublicationsService } from './shared/services/publications.service';
+import { PublicationTableComponent } from './components/publication-table/publication-table.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { PublicationCardComponent } from './components/publication-card/publication-card.component';
+import { FragmentViewerComponent } from './components/fragment-viewer/fragment-viewer.component';
+import { KeepHtmlPipe } from './shared/pipes/keep-html.pipe';
+import { HighlightTextPipe } from './shared/pipes/highlight-text.pipe';
+import { PublicationService } from './shared/services/publication.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FacetsComponent } from './components/facets/facets.component';
+import { FilterComponent } from './components/filter/filter.component';
+import { AlleleListComponent } from './components/allele-list/allele-list.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { QueryViewerComponent } from './components/query-viewer/query-viewer.component';
+import { ReadMoreComponent } from './components/read-more/read-more.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { LoginComponent } from './pages/login/login.component';
-import { TokenInterceptor } from './shared/services/interceptor.service';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    MainComponent,
     HomeComponent,
-    HeadBarComponent,
-    LogoComponent,
-    FooterComponent,
-    StatusFilterComponent,
-    CountComponent,
-    PublicationListComponent,
-    PublicationComponent,
-    FragmentExplorerComponent,
-    PublicationKeywordListComponent,
-    PublicationAlleleAdderComponent,
-    FacetsComponent,
+    PublicationTableComponent,
+    PublicationCardComponent,
+    FragmentViewerComponent,
+    KeywordListComponent,
+    KeepHtmlPipe,
+    HighlightTextPipe,
+    FilterComponent,
+    AlleleListComponent,
+    QueryViewerComponent,
+    ReadMoreComponent,
     LoginComponent,
-    PublicationNotLoggedInComponent,
-    KeepHtmlPipe
+    FooterComponent
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
     AppRoutingModule,
-    MatToolbarModule,
+    BrowserAnimationsModule,
+    MatGridListModule,
+    MatCardModule,
+    MatMenuModule,
     MatIconModule,
     MatButtonModule,
-    MatButtonToggleModule,
-    MatChipsModule,
-    MatCardModule,
-    MatStepperModule,
-    NgxCarouselModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatAutocompleteModule,
-    MatPaginatorModule,
+    LayoutModule,
+    MatToolbarModule,
     MatSidenavModule,
     MatListModule,
-    MatCheckboxModule,
-    MatSnackBarModule,
-    MatTooltipModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatTabsModule,
+    MatBadgeModule,
     MatExpansionModule,
+    MatStepperModule,
+    MatChipsModule,
+    MatProgressSpinnerModule,
+    HttpClientModule,
+    MatAutocompleteModule,
+    MatFormFieldModule,
+    MatTooltipModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    MatSelectModule,
+    MatButtonToggleModule,
+    MatInputModule,
+    MatCheckboxModule,
+    MatSnackBarModule
   ],
   providers: [
+    PublicationService,
+    AlleleAutocompleteService,
+    FilterService,
     AuthService,
     AuthGuard,
-    PublicationsService,
-    FragmentsService,
-    AlleleAutocompleteService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

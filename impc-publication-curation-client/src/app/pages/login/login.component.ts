@@ -1,13 +1,13 @@
-import { TokenStorage } from './../../shared/services/token-storage.service';
+import { environment } from './../../../environments/environment';
 import { AuthService } from '../../shared/services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
+import {FormControl, Validators} from '@angular/forms';
 
 @Component({
   selector: 'impc-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
 
@@ -15,6 +15,8 @@ export class LoginComponent implements OnInit {
     username: '',
     password: ''
   };
+
+  title = '';
 
   userNameFormControl = new FormControl('', [
     Validators.required
@@ -24,14 +26,17 @@ export class LoginComponent implements OnInit {
     Validators.required
   ]);
 
-  constructor(private _auth: AuthService, private _tokenStorage: TokenStorage, private _router: Router) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
+    this.title = environment.title;
   }
 
   login() {
-    this._auth.login(this.user).then( data => {
-      this._router.navigate(['']);
+    this.user.username = this.userNameFormControl.value;
+    this.user.password = this.passwordFormControl.value;
+    this.authService.login(this.user).then( data => {
+      this.router.navigate(['']);
     }
     );
   }

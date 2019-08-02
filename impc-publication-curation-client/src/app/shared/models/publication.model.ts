@@ -1,37 +1,71 @@
-import { Allele } from './allele.model';
-import { FullTextUrl } from './fulltext-url.model';
+export interface Allele {
+  acc: string;
+  gacc: string;
+  geneSymbol: string;
+  project: string;
+  alleleName: string;
+  alleleSymbol: string;
+}
 
+export interface FullTextUrlList {
+  url: string;
+  documentStyle: string;
+}
 
-export class Publication {
-   title: string;
-   fullTextUrlList: FullTextUrl[];
-   journal: string;
-   authorString: string;
-   keywords: any;
-   datasource: string;
-   falsePositive: boolean;
-   reviewed: boolean;
-   alleles: Allele[];
-   firstPublicationDate: String;
-   cites: any;
-   journalInfo: any;
-   authors: any;
-   fragments: any;
-   consortiumPaper: boolean;
+export interface GrantsList {
+  grantId: string;
+  agency: string;
+}
 
-   constructor(title: string, fullTextUrlList: FullTextUrl[], journal: string, authorString: string,
-    keywords: any, datasource: string, alleles: Allele[],
-    falsePositive: boolean, reviewed: boolean, consortiumPaper: boolean, firstPublicationDate: String) {
-        this.title = title;
-        this.fullTextUrlList = fullTextUrlList;
-        this.journal = journal;
-        this.authorString = authorString;
-        this.keywords = keywords;
-        this.datasource = datasource;
-        this.alleles = alleles;
-        this.falsePositive = falsePositive;
-        this.reviewed = reviewed;
-        this.consortiumPaper = consortiumPaper;
-        this.firstPublicationDate = firstPublicationDate;
-   }
+export interface Journal {
+  title: string;
+}
+
+export interface JournalInfo {
+  dateOfPublication: string;
+  journal: Journal;
+}
+
+export interface Fragments {
+  EUCOMM: string[];
+  KOMP: string[];
+  INFRAFRONTIER: any[];
+  JAX: any[];
+  IMPC: any[];
+  EMMA: string[];
+  alleles: any[];
+}
+
+export interface Correspondence {
+  authors: string[];
+  emails: string[];
+}
+
+export interface Publication {
+  title: string;
+  authorString: string;
+  pmid: string;
+  pmcid: string;
+  datasource: string;
+  falsePositive: boolean;
+  consortiumPaper: boolean;
+  reviewed: boolean;
+  alleles: Allele[];
+  fullTextUrlList: FullTextUrlList[];
+  grantsList: GrantsList[];
+  journalInfo: JournalInfo;
+  fragments: Fragments;
+  cites: any[];
+  citations: any[];
+  keyword: string;
+  firstPublicationDate: string;
+  alleleCandidates: any[];
+  correspondence: Correspondence[];
+  pendingEmailConfirmation: boolean;
+  orderId: string;
+}
+
+export interface GraphQLResponse {
+  data: any;
+  error: any;
 }

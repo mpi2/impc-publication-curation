@@ -4,15 +4,18 @@ schema {
 }
 
 type Query {
-    publications(start: Int, size: Int, reviewed: Boolean, falsePositive: Boolean, keywords: [String], consortiumPaper: Boolean, alleles: Boolean, cites: Boolean): [Publication]
+    publications(start: Int, size: Int, reviewed: Boolean, falsePositive: Boolean, keywords: [String],
+                 consortiumPaper: Boolean, alleles: Boolean, cites: Boolean,
+                 orderBy: PublicationOrderByInput, search: String,
+                 publicationYearFrom: Int, publicationYearTo: Int, pendingEmailConfirmation: Boolean): [Publication]
     publication(id: String): Publication
     publicationByPmid(pmid: String): Publication
     publicationsByReviewed(reviewed: Boolean, start: Int, size: Int): [Publication]
-    count(reviewed: Boolean, falsePositive: Boolean, keywords: [String], consortiumPaper: Boolean, alleles: Boolean, cites: Boolean): Int
+    count(reviewed: Boolean, falsePositive: Boolean, keywords: [String], consortiumPaper: Boolean, alleles: Boolean, cites: Boolean, search: String, publicationYearFrom: Int, publicationYearTo: Int, pendingEmailConfirmation: Boolean): Int
 }
 
 type Mutation {
-    updateReviewed(pmid: String!, reviewed: Boolean, alleles: [AlleleRefInput], falsePositive: Boolean, consortiumPaper: Boolean, alleleCandidates: [AlleleRefInput]): Publication
+    updateReviewed(pmid: String!, reviewed: Boolean, alleles: [AlleleRefInput], falsePositive: Boolean, consortiumPaper: Boolean, pendingEmailConfirmation: Boolean, alleleCandidates: [AlleleRefInput], orderId: String): Publication
 }
 
 type Publication {
@@ -22,7 +25,7 @@ type Publication {
     pmcid: String
     doi: String
     authorString: String
-    pubYear: String
+    pubYear: Int
     pageInfo: String
     abstractText: String
     journalInfo: JournalInfo
@@ -33,7 +36,7 @@ type Publication {
     datasource: String
     reviewed: Boolean
     falsePositive: Boolean
-    fragments: Fragments
+    fragments: [Fragment]
     citations: [Citation]
     cites: [String]
     keyword: String
@@ -41,6 +44,8 @@ type Publication {
     alleleCandidates: [AlleleRef]
     consortiumPaper: Boolean
     correspondence: [Correspondence]
+    pendingEmailConfirmation: Boolean
+    orderId: String
 }
 
 type Correspondence {
@@ -57,7 +62,7 @@ input PublicationFilter {
     pmcid: String
     doi: String
     authorString: String
-    pubYear: String
+    pubYear: Int
     pageInfo: String
     abstractText: String
     datasource: String
@@ -75,6 +80,19 @@ input AuthorFilter {
     lastName: String
     initials: String
     affiliation: String
+}
+
+enum PublicationOrderByInput {
+  title_ASC
+  title_DESC
+  authorList_ASC
+  authorList_DESC
+  keyword_ASC
+  keyword_DESC
+  firstPublicationDate_ASC
+  firstPublicationDate_DESC
+  journal_ASC
+  journal_DESC
 }
 
 type JournalInfo {
@@ -136,14 +154,9 @@ type FullTextUrl {
     url: String
 }
 
-type Fragments {
-    EUCOMM: [String]
-    KOMP: [String]
-    INFRAFRONTIER: [String]
-    JAX: [String]
-    IMPC: [String]
-    EMMA: [String]
-    alleles: [AlleleMention]
+type Fragment {
+    keyword: String
+    mentions: [String]
 }
 
 type AlleleMention {

@@ -1,6 +1,8 @@
 package org.impc.publications.controllers;
 
 import org.impc.publications.models.Allele;
+import org.impc.publications.models.Journal;
+import org.impc.publications.repositories.PublicationRepository;
 import org.impc.publications.services.AlleleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,5 +32,19 @@ PublicationController {
     @RequestMapping("/alleles/{text}")
     public Iterable<Allele> getAllAllelesBySymbol(@PathVariable("text") String text) {
         return alleleService.findBySymbol(text);
+    }
+
+
+    @CrossOrigin
+    @RequestMapping("/genes")
+    public Iterable<String> getAllCitedAlleles() {
+        return alleleService.getCitedGenes();
+    }
+
+
+    @CrossOrigin
+    @RequestMapping("/journals")
+    public Iterable<String> getAllJournals() {
+        return this.alleleService.getAlljournals();
     }
 }

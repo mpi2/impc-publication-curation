@@ -1,0 +1,56 @@
+@import "variables.scss";
+
+.author-list {
+  font-style: italic;
+}
+
+a {
+  color: $primary;
+  text-decoration: none;
+  vertical-align: middle;
+}
+
+
+.fulltext-icon {
+  height: 18px !important;
+  width: 18px !important;
+  font-size: 18px;
+  vertical-align: middle;
+}
+
+.correspondence-label {
+  vertical-align: middle;
+}
+
+
+.fragment-viewer-wrapper {
+  max-width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+}
+
+.actions > button {
+  margin: 0px 5px;
+}
+
+.action-label {
+  line-height: 36px;
+  margin-left: 20px;
+}
+
+.allele-list-wrapper {
+  margin-top: 10px;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.consortium {
+  margin-left: 10px;
+}
+
+
+.waiting {
+  color: #f3b111;
+}

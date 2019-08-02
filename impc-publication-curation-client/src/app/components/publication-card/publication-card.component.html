@@ -1,0 +1,52 @@
+<mat-card class="mat-elevation-z4">
+  <mat-card-header>
+    <mat-card-title>{{ publication.title }}</mat-card-title>
+    <mat-card-subtitle>
+      <div>
+          <a [attr.href]="'https://www.ncbi.nlm.nih.gov/pubmed/' + publication.pmid" target="_blank" color="accent">
+              <mat-icon class="fulltext-icon">open_in_new</mat-icon> PubMed ID: {{ publication.pmid }}</a>&nbsp;
+        <a [attr.href]="publication.fullTextUrlList[0].url" target="_blank" color="accent">
+          <mat-icon class="fulltext-icon">open_in_new</mat-icon> Full text</a>&nbsp;
+          <a *ngFor="let pmid of publication.cites" [attr.href]="'https://www.ncbi.nlm.nih.gov/pubmed/' + pmid" class="fulltext-link" target="_blank"><mat-icon class="fulltext-icon">open_in_new</mat-icon> Cites IMPC Paper - PMID:{{ pmid }}</a>
+        </div>
+        <div class="author-list">{{ publication.authorString }}</div>
+        <div>{{ publication.journalInfo.journal.title }} - {{ publication.firstPublicationDate.replace('BST', 'GMT') | date:'MMMM, yyyy'}}</div>
+        <mat-checkbox class="consortium" [(ngModel)]="publication.consortiumPaper"  *ngIf="showActions && showConsortiumCheck">Consortium paper</mat-checkbox>
+        <div *ngIf="publication.correspondence != null"> <span class="correspondence-label">Corresponding authors: </span>
+          <span *ngFor="let correspondence of publication.correspondence">
+            <a *ngIf="showActions" [attr.href]="getMailTo(correspondence)" color="accent">
+              <mat-icon class="fulltext-icon">mail</mat-icon>&nbsp;
+              <span *ngFor="let author of correspondence.authors; let i=index">{{ author }}<span *ngIf="i < correspondence.authors.length - 1">,&nbsp;</span>
+            </span>&nbsp;
+          </a> <span *ngIf="!showActions">
+            <mat-icon>mail</mat-icon>
+            <span *ngFor="let author of correspondence.authors; let i=index">{{author}}<span *ngIf="i < correspondence.authors.length - 1">,&nbsp;</span>
+          </span>
+        </span>
+      </span>
+    </div>
+  </mat-card-subtitle>
+</mat-card-header>
+<mat-card-content>
+  <div class="fragment-viewer-wrapper">
+      <impc-fragment-viewer [fragments]="publication.fragments"></impc-fragment-viewer>
+  </div>
+  <div class="allele-list-wrapper">
+    <impc-allele-list [alleles]="publication.alleles" [editable]="showActions"></impc-allele-list>
+  </div>
+  <div class="allele-list-wrapper"  *ngIf="showOrderId">
+      <mat-form-field>
+          <input matInput placeholder="Order ID" type="text" [(ngModel)]="publication.orderId">
+          <mat-icon matSuffix>receipt</mat-icon>
+        </mat-form-field>
+    </div>
+</mat-card-content>
+<mat-card-actions align="end" class="actions" *ngIf="showActions">
+  <span class="mat-body-strong action-label">Marks as: </span>
+  <button mat-stroked-button color="warn" *ngIf="publication.falsePositive || publication.reviewed || publication.pendingEmailConfirmation" (click)="setStatus(false, false, false, 'pending')"><mat-icon>undo</mat-icon> PENDING</button>
+  <button mat-stroked-button color="warn" *ngIf="!publication.falsePositive" (click)="setStatus(true, true, false, 'false positive')"><mat-icon>error_outline</mat-icon> FALSE POSITIVE</button>
+  <button mat-stroked-button class="waiting" *ngIf="showEmailConfirm && !publication.pendingEmailConfirmation" (click)="setStatus(false, false, true, 'waiting for email confirmation')"><mat-icon>markunread_mailbox</mat-icon> EMAIL CONFIRMATION NEEDED</button>
+  <button mat-stroked-button color="accent" *ngIf="!publication.reviewed || publication.falsePositive || publication.pendingEmailConfirmation" (click)="setStatus(true, false, false, 'reviewed')"><mat-icon>done</mat-icon> REVIEWED</button>
+  <button mat-stroked-button color="accent" *ngIf="publication.reviewed && !publication.falsePositive" (click)="setStatus(true, false, false, 'updated')"><mat-icon>refresh</mat-icon> UPDATED</button>
+</mat-card-actions>
+</mat-card>

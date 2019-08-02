@@ -1,16 +1,15 @@
 package org.impc.publications.services;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
+import graphql.GraphQLError;
 import lombok.AllArgsConstructor;
 import org.impc.publications.models.AlleleRef;
 import org.impc.publications.models.Publication;
 import org.impc.publications.repositories.PublicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.ArrayList;
 
@@ -21,18 +20,16 @@ public class GraphQLMutation implements GraphQLMutationResolver {
     @Autowired
     private PublicationRepository publicationRepository;
 
-    @Autowired
-    private MongoOperations mongoOperations;
-
-    public Publication updateReviewed(String pmid, boolean reviewed, ArrayList<AlleleRef> alleles, boolean falsePositive, boolean consortiumPaper, ArrayList<AlleleRef> alleleCandidates) {
-        Query query = new Query(new Criteria("pmid").is(pmid));
-        Update update = new Update().set("reviewed", reviewed)
-                .set("alleles", alleles)
-                .set("falsePositive", falsePositive)
-                .set("consortiumPaper", consortiumPaper)
-                .set("alleleCandidates", alleleCandidates);
-        mongoOperations.updateFirst(query, update, "references");
+    public Publication updateReviewed(String pmid, boolean reviewed, ArrayList<AlleleRef> alleles,
+                                      boolean falsePositive, boolean consortiumPaper,
+                                      boolean pendingEmailConfirmation, ArrayList<AlleleRef> alleleCandidates, String orderId) {
+        this.publicationRepository.updatedStatus(pmid, reviewed, alleles, falsePositive, consortiumPaper, pendingEmailConfirmation, alleleCandidates, orderId);
         return publicationRepository.findPublicationByPmid(pmid);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public GraphQLError exception(AccessDeniedException exception) {
+        return new GraphQLAccessDeniedError();
     }
 
 }

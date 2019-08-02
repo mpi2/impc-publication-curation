@@ -1,0 +1,7 @@
+<div class="mentions mat-caption" *ngIf="keywords.length > 0" >
+    <span class="label">Mentions:</span>
+    <mat-chip-list #keywordList>
+      <mat-chip *ngFor="let keyword of keywords" [selected]="keyword.selected" [selectable]="true" (click)="changeSelection(keyword)" class="keyword">{{ keyword.label }}</mat-chip>
+    </mat-chip-list>
+</div>
+

@@ -1,0 +1,28 @@
+@import "variables";
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.fragment-viewer-stepper > .mat-horizontal-stepper-header-container {
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.fragment-viewer-stepper > div > mat-step-header > .mat-step-label {
+  display: none;
+}
+
+.search-highlight {
+  background-color: $primary;
+}
+
+.mat-step-icon-state-edit {
+  background-color: rgba(0, 0, 0, 0.54) !important;
+}
+
+// impc-keyword-list > mat-chip-list > .mat-chip-list-wrapper {
+//   justify-content: center;
+// }

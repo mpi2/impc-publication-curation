@@ -1,0 +1,3 @@
+<div class="query-container">
+<span *ngFor="let filter of filters">{{filter.name | uppercase}} is in [<mat-chip-list class="query-chip-list"><mat-chip *ngFor="let value of filter.values" color="accent" selected class="query-chip">{{value}}</mat-chip></mat-chip-list>]</span>
+</div>

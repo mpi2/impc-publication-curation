@@ -24,7 +24,7 @@ public class Publication {
     private String pmcid;
     private String doi;
     private String authorString;
-    private String pubYear;
+    private Integer pubYear;
     private String pageInfo;
     private String abstractText;
     private JournalInfo journalInfo;
@@ -36,7 +36,9 @@ public class Publication {
     private Boolean reviewed;
     private Boolean consortiumPaper;
     private Boolean falsePositive;
-    private Fragments fragments;
+    private Boolean pendingEmailConfirmation;
+    private String orderId;
+    private ArrayList<Fragment> fragments;
     private ArrayList<Citation> citations;
     private ArrayList<String> cites;
     private String keyword;

@@ -1,15 +1,11 @@
 package org.impc.publications.repositories;
 
+import org.bson.types.ObjectId;
 import org.impc.publications.models.Allele;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.solr.repository.SolrCrudRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-@Repository
-public interface AlleleRepository extends SolrCrudRepository<Allele, String> {
-
-    public Page<Allele> findAll();
-    public Page<Allele> findAllelesByAlleleSymbolContaining(String text, Pageable pageRequest);
-
+public interface AlleleRepository extends MongoRepository<Allele, ObjectId>, AlleleRepositoryCustom {
+    Page<Allele> findAll(Pageable pageable);
 }
