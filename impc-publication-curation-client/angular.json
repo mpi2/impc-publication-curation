@@ -93,6 +93,56 @@
                   "src/styles/infrafrontier/"
                 ]
               }
+            },
+            "infrafrontier-prod": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.infrafrontier.ts"
+                },
+                {
+                  "replace": "src/assets/img/logo.png",
+                  "with": "src/assets/img/logo-infrafrontier.png"
+                },
+                {
+                  "replace": "src/assets/img/logo-login.png",
+                  "with": "src/assets/img/logo-infrafrontier-login.png"
+                },
+                {
+                  "replace": "src/favicon.ico",
+                  "with": "src/infrafrontier-favicon.ico"
+                },
+                {
+                  "replace": "src/app/components/footer/footer.component.html",
+                  "with": "src/app/components/footer/footer.infrafrontier.component.html"
+                }
+              ],
+              "styles": [
+                "src/styles/infrafrontier/theme.scss",
+                "src/styles/styles.scss",
+                "src/styles/infrafrontier/variables.scss"
+              ],
+              "stylePreprocessorOptions": {
+                "includePaths": [
+                  "src/styles/infrafrontier/"
+                ]
+              },
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
             }
           }
         },
