@@ -11,3 +11,4 @@ build:
  script:
 
   - npm run build-infrafrontier
+  - scp -r dist/impc-publication-curation-client/*  $DEPLOYMENT_USER@$DEPLOYMENT_SERVER:$DEPLOYMENT_PATH

@@ -3,10 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  publicationsApiUrl: 'http://localhost:8080/graphql',
-  alleleApiUrl: 'http://localhost:8080/alleles',
-  authUrl: 'http://localhost:8080/token/generate-token',
+  production: true,
+  publicationsApiUrl: '/api/graphql',
+  alleleApiUrl: '/api/alleles',
+  authUrl: '/api/token/generate-token',
   tokenKey: 'AuthToken',
   title: 'INFRAFRONTIER - Publications Curation',
   confirmViaEmail: true,
