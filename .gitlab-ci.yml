@@ -10,4 +10,4 @@ build:
 
  script:
 
-  - ng build --prod
+  - npm run build-infrafrontier
