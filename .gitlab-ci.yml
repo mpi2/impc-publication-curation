@@ -5,7 +5,7 @@ build:
  image: trion/ng-cli
 
  before_script:
-  - cd impc/publication/curation/client/
+  - cd impc-publication-curation-client/
   - npm ci
 
  script:
