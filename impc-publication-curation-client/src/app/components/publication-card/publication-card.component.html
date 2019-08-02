@@ -34,7 +34,7 @@
   <div class="allele-list-wrapper">
     <impc-allele-list [alleles]="publication.alleles" [editable]="showActions"></impc-allele-list>
   </div>
-  <div class="allele-list-wrapper"  *ngIf="showOrderId">
+  <div class="allele-list-wrapper"  *ngIf="showOrderId && showActions">
       <mat-form-field>
           <input matInput placeholder="Order ID" type="text" [(ngModel)]="publication.orderId">
           <mat-icon matSuffix>receipt</mat-icon>
