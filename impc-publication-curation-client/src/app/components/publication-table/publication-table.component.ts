@@ -146,7 +146,7 @@ export class PublicationTableComponent implements AfterViewInit, OnInit {
             .join('; ');
           return csvPublication;
         });
-        const csv = new ngxCsv(csvPublications, 'My Report', {
+        const csv = new ngxCsv(csvPublications, 'INFRAFRONTIER - publications', {
           showLabels: true,
           headers: ['Order ID', 'pmid', 'title', 'alleles']
         });
