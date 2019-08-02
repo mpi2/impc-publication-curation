@@ -6,3 +6,4 @@ IMPC publications curation app
 
 
 ## IMPC Publications Curation Client
+This is an angular app
