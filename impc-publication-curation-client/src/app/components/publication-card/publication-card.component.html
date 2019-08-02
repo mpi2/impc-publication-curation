@@ -12,14 +12,14 @@
         <div class="author-list">{{ publication.authorString }}</div>
         <div>{{ publication.journalInfo.journal.title }} - {{ publication.firstPublicationDate.replace('BST', 'GMT') | date:'MMMM, yyyy'}}</div>
         <mat-checkbox class="consortium" [(ngModel)]="publication.consortiumPaper"  *ngIf="showActions && showConsortiumCheck">Consortium paper</mat-checkbox>
-        <div *ngIf="publication.correspondence != null"> <span class="correspondence-label">Corresponding authors: </span>
+        <div *ngIf="publication.correspondence != null && publication.correspondence.length > 0"> <span class="correspondence-label">Corresponding authors: </span>
           <span *ngFor="let correspondence of publication.correspondence">
             <a *ngIf="showActions" [attr.href]="getMailTo(correspondence)" color="accent">
               <mat-icon class="fulltext-icon">mail</mat-icon>&nbsp;
               <span *ngFor="let author of correspondence.authors; let i=index">{{ author }}<span *ngIf="i < correspondence.authors.length - 1">,&nbsp;</span>
             </span>&nbsp;
           </a> <span *ngIf="!showActions">
-            <mat-icon class="fulltext-icon">mail</mat-icon>
+            <mat-icon class="fulltext-icon">mail</mat-icon>&nbsp;
             <span *ngFor="let author of correspondence.authors; let i=index">{{author}}<span *ngIf="i < correspondence.authors.length - 1">,&nbsp;</span>
           </span>
         </span>

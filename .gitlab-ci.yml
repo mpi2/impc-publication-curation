@@ -21,4 +21,4 @@ build:
   - SCP_ROUTE+=$DEPLOYMENT_SERVER
   - SCP_ROUTE+=":"
   - SCP_ROUTE+=$DEPLOYMENT_PATH
-  - scp -r dist/impc-publication-curation-client/* $SCP_ROUTE
+  - scp -o StrictHostKeyChecking=no -r dist/impc-publication-curation-client/* $SCP_ROUTE
