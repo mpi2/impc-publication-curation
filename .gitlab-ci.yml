@@ -5,17 +5,20 @@ build:
  image: trion/ng-cli
 
  before_script:
-  - apk add --update curl && rm -rf /var/cache/apk/*
   - 'which ssh-agent || ( apt-get install -qq openssh-client )'
   - eval $(ssh-agent -s)
   - ssh-add <(echo "$SSH_PRIVATE_KEY")
   - mkdir -p ~/.ssh
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-  - curl $TEST_URL
   - cd impc-publication-curation-client/
   - npm ci
 
  script:
 
   - npm run build-infrafrontier
-  - scp -r dist/impc-publication-curation-client/*  $DEPLOYMENT_USER@$DEPLOYMENT_SERVER:$DEPLOYMENT_PATH
+  - export SCP_ROUTE=$DEPLOYMENT_USER
+  - SCP_ROUTE+="@"
+  - SCP_ROUTE+=$DEPLOYMENT_SERVER
+  - SCP_ROUTE+=":"
+  - SCP_ROUTE+=$DEPLOYMENT_PATH
+  - scp -r dist/impc-publication-curation-client/* $SCP_ROUTE
