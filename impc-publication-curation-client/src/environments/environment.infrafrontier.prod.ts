@@ -5,9 +5,9 @@
 export const environment = {
   production: true,
   baseUrl: '/mi/infrafrontier/publications/',
-  publicationsApiUrl: '/api/graphql',
-  alleleApiUrl: '/api/alleles',
-  authUrl: '/api/token/generate-token',
+  publicationsApiUrl: '/mi/infrafrontier/publications/api/graphql',
+  alleleApiUrl: '/mi/infrafrontier/publications/api/alleles',
+  authUrl: '/mi/infrafrontier/publications/api/token/generate-token',
   tokenKey: 'AuthToken',
   title: 'INFRAFRONTIER - Publications Curation',
   confirmViaEmail: true,

@@ -14,6 +14,7 @@ import { MatTable } from '@angular/material/table';
 import { PublicationService } from 'src/app/shared/services/publication.service';
 import { merge, of as observableOf } from 'rxjs';
 import { startWith, switchMap, map, catchError, filter } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'impc-publication-table',
@@ -146,7 +147,7 @@ export class PublicationTableComponent implements AfterViewInit, OnInit {
             .join('; ');
           return csvPublication;
         });
-        const csv = new ngxCsv(csvPublications, 'INFRAFRONTIER - publications', {
+        const csv = new ngxCsv(csvPublications, `${environment.title} report`, {
           showLabels: true,
           headers: ['Order ID', 'pmid', 'title', 'alleles']
         });

@@ -202,7 +202,7 @@ export class PublicationService {
     let str = '';
     for (const p in obj) {
       if (obj.hasOwnProperty(p)) {
-        if (obj[p] === '' || obj[p].length === 0) {
+        if (obj[p] === null || obj[p] === '' || obj[p].length === 0) {
           continue;
         }
         if (p === 'provenance') {
