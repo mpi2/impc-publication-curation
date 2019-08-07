@@ -43,10 +43,7 @@
 </mat-card-content>
 <mat-card-actions align="end" class="actions" *ngIf="showActions">
   <span class="mat-body-strong action-label">Marks as: </span>
-  <button mat-stroked-button color="warn" *ngIf="publication.falsePositive || publication.reviewed || publication.pendingEmailConfirmation" (click)="setStatus(false, false, false, 'pending')"><mat-icon>undo</mat-icon> PENDING</button>
-  <button mat-stroked-button color="warn" *ngIf="!publication.falsePositive" (click)="setStatus(true, true, false, 'false positive')"><mat-icon>error_outline</mat-icon> FALSE POSITIVE</button>
-  <button mat-stroked-button class="waiting" *ngIf="showEmailConfirm && !publication.pendingEmailConfirmation" (click)="setStatus(false, false, true, 'waiting for email confirmation')"><mat-icon>markunread_mailbox</mat-icon> EMAIL CONFIRMATION NEEDED</button>
-  <button mat-stroked-button color="accent" *ngIf="!publication.reviewed || publication.falsePositive || publication.pendingEmailConfirmation" (click)="setStatus(true, false, false, 'reviewed')"><mat-icon>done</mat-icon> REVIEWED</button>
-  <button mat-stroked-button color="accent" *ngIf="publication.reviewed && !publication.falsePositive" (click)="setStatus(true, false, false, 'updated')"><mat-icon>refresh</mat-icon> UPDATED</button>
+      <button mat-stroked-button [color]="category.color" *ngFor="let category of categories" (click)="setStatus(category.status, category.name)" > <mat-icon>{{ category.icon }}</mat-icon> {{ category.name }}</button>
+      <button mat-stroked-button color="accent" *ngIf="publication.status === 'reviewed'" (click)="setStatus('reviewed', 'updated')"> <mat-icon>update</mat-icon> Updated</button>
 </mat-card-actions>
 </mat-card>

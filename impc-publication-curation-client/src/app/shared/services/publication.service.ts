@@ -6,12 +6,15 @@ import { environment } from '../../../environments/environment';
 import { map, catchError } from 'rxjs/operators';
 import { Publication } from '../models/publication.model';
 import { merge, of as observableOf } from 'rxjs';
+import { QueryHelper } from './query.helper.util';
 
 @Injectable()
 export class PublicationService {
   reloadPublications: EventEmitter<any> = new EventEmitter();
 
   constructor(private http: HttpClient) {}
+
+  submitPublication = (pmid, reference) => this.http.post(`${environment.submissionUrl}/${pmid}`, reference);
 
   getPublications(
     start = 1,
@@ -20,67 +23,14 @@ export class PublicationService {
     orderByField = 'firstPublicationDate',
     orderByDirection = 'DESC'
   ): Observable<Publication[]> {
-    const query = `{
-      publications(start: ${start}, size: ${size}, orderBy: ${orderByField}_${orderByDirection}, ${this.parseFilter(
-      filter
-    )}){
-        title
-        authorString
-        pmid
-        pmcid
-        datasource
-        falsePositive
-        consortiumPaper
-        pendingEmailConfirmation
-        orderId
-        reviewed
-        correspondence {
-          authors
-          emails
-        }
-        alleles{
-          acc
-          gacc
-          geneSymbol
-          project
-          alleleName
-          alleleSymbol
-        }
-        fullTextUrlList{
-          url
-          documentStyle
-        }
-        grantsList{
-          grantId
-          agency
-        }
-        journalInfo{
-          dateOfPublication
-          journal{
-            title
-          }
-        }
-        fragments{
-          keyword
-          mentions
-        }
-        cites
-        citations {
-          pmid
-          references
-        }
-        keyword
-        firstPublicationDate
-        alleleCandidates {
-          acc
-          gacc
-          geneSymbol
-          project
-          alleleName
-          alleleSymbol
-        }
-      }
-    }`;
+    const queryHelper = new QueryHelper();
+    const query = queryHelper.publicationsQuery(
+      start,
+      size,
+      this.parseFilter(filter),
+      orderByField,
+      orderByDirection,
+    );
     return this.http
       .post(
         environment.publicationsApiUrl,
@@ -147,11 +97,9 @@ export class PublicationService {
 
   setPublicationStatus(
     pmid,
-    reviewed = false,
+    status = '',
     alleles = [],
-    falsePositive = false,
     consortiumPaper = false,
-    waitingForEmail = false,
     orderId = null
   ) {
     let allelesString = '';
@@ -163,22 +111,14 @@ export class PublicationService {
     });
     allelesString =
       '[' + allelesString.substring(0, allelesString.length - 2) + ']';
-    const query = `
-  mutation {
-    updateReviewed(
-    pmid: \\"${pmid}\\",
-    reviewed: ${reviewed},
-    alleles: ${allelesString},
-    falsePositive: ${falsePositive},
-    consortiumPaper: ${consortiumPaper},
-    pendingEmailConfirmation: ${waitingForEmail},
-    orderId: \\"${orderId}\\",
-    alleleCandidates: []
-    ){
-      title
-      reviewed
-    },
-  }`;
+    const queryHelper = new QueryHelper();
+    const query = queryHelper.setStatusQuery(
+      pmid,
+      status,
+      consortiumPaper,
+      orderId,
+      allelesString
+    );
     return this.http
       .post(
         environment.publicationsApiUrl,
@@ -207,7 +147,7 @@ export class PublicationService {
         }
         if (p === 'provenance') {
           str += obj[p] + ', ';
-        } else if (p === 'search') {
+        } else if (p === 'search' || p === 'status') {
           str += p + ': \\"' + obj[p] + '\\", ';
         } else if (p !== 'keywords') {
           str += p + ': ' + obj[p] + ', ';

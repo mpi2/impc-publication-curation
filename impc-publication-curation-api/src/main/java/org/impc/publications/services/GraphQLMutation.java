@@ -20,10 +20,10 @@ public class GraphQLMutation implements GraphQLMutationResolver {
     @Autowired
     private PublicationRepository publicationRepository;
 
-    public Publication updateReviewed(String pmid, boolean reviewed, ArrayList<AlleleRef> alleles,
-                                      boolean falsePositive, boolean consortiumPaper,
-                                      boolean pendingEmailConfirmation, ArrayList<AlleleRef> alleleCandidates, String orderId) {
-        this.publicationRepository.updatedStatus(pmid, reviewed, alleles, falsePositive, consortiumPaper, pendingEmailConfirmation, alleleCandidates, orderId);
+    public Publication updateReviewed(String pmid, String status, ArrayList<AlleleRef> alleles,
+                                      boolean consortiumPaper,
+                                      ArrayList<AlleleRef> alleleCandidates, String orderId) {
+        this.publicationRepository.updatedStatus(pmid, status, alleles, consortiumPaper, alleleCandidates, orderId);
         return publicationRepository.findPublicationByPmid(pmid);
     }
 

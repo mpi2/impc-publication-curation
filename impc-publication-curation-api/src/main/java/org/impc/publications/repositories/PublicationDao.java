@@ -12,5 +12,5 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 public interface PublicationDao extends PagingAndSortingRepository<Publication, ObjectId> {
 
     public Publication findByPmid(@Param("pmid") long pmid);
-    public Page findByReviewed(@Param("reviewed") String reviewed, Pageable p);
+    public Page findByStatus(@Param("status") String status, Pageable p);
 }

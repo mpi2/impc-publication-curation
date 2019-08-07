@@ -8,6 +8,8 @@ export const environment = {
   publicationsApiUrl: 'http://localhost:8080/graphql',
   alleleApiUrl: 'http://localhost:8080/alleles',
   authUrl: 'http://localhost:8080/token/generate-token',
+  harvesterUrl: 'http://localhost:8000/harvest',
+  submissionUrl: 'http://localhost:8080/submit',
   tokenKey: 'AuthToken',
   title: 'IMPC - Publications Curation',
   confirmViaEmail: false,
@@ -41,18 +43,21 @@ export const environment = {
   categories: [
     {
       name: 'Pending',
-      filter: { reviewed: false },
-      icon: 'assignment'
+      status: 'pending',
+      icon: 'assignment',
+      color: 'warn'
     },
     {
       name: 'False positive',
-      filter: { falsePositive: true },
-      icon: 'assignment_late'
+      status: 'falsePositive',
+      icon: 'assignment_late',
+      color: 'warn'
     },
     {
       name: 'Reviewed',
-      filter: { reviewed: true, falsePositive: false },
-      icon: 'assignment_turned_in'
+      status: 'reviewed',
+      icon: 'assignment_turned_in',
+      color: 'accent'
     }
   ]
 };

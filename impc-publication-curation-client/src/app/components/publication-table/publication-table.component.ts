@@ -47,7 +47,7 @@ export class PublicationTableComponent implements AfterViewInit, OnInit {
   resultsLength = 0;
 
   @Input()
-  filter = {};
+  status;
 
   publications: Publication[] = [];
 
@@ -80,7 +80,7 @@ export class PublicationTableComponent implements AfterViewInit, OnInit {
           return this.publicationService.getPublications(
             this.paginatorTop.pageIndex,
             this.paginatorTop.pageSize,
-            { ...this.filter, ...this.filterService.filter },
+            { status: this.status, ...this.filterService.filter },
             this.sortActive,
             this.sortDirection
           );
@@ -131,7 +131,7 @@ export class PublicationTableComponent implements AfterViewInit, OnInit {
   downloadCsv() {
     this.publicationService
       .getPublications(0, this.resultsLength, {
-        ...this.filter,
+        status,
         ...this.filterService.filter
       })
       .subscribe(publications => {

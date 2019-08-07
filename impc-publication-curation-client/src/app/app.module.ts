@@ -1,3 +1,4 @@
+import { HarvesterService } from './shared/services/harvester.service';
 import { TokenInterceptor } from './shared/services/interceptor.service';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { AuthService } from './shared/services/auth.service';
@@ -53,6 +54,10 @@ import { ReadMoreComponent } from './components/read-more/read-more.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { LoginComponent } from './pages/login/login.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { MatRadioModule } from '@angular/material/radio';
+import { PublicationAdderComponent } from './components/publication-adder/publication-adder.component';
+import {MatDialogModule, MatDialog} from '@angular/material/dialog';
+
 
 @NgModule({
   declarations: [
@@ -70,7 +75,8 @@ import { FooterComponent } from './components/footer/footer.component';
     QueryViewerComponent,
     ReadMoreComponent,
     LoginComponent,
-    FooterComponent
+    FooterComponent,
+    PublicationAdderComponent
   ],
   imports: [
     BrowserModule,
@@ -105,19 +111,25 @@ import { FooterComponent } from './components/footer/footer.component';
     MatInputModule,
     MatCheckboxModule,
     MatSnackBarModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatRadioModule,
+    MatDialogModule
   ],
   providers: [
     PublicationService,
     AlleleAutocompleteService,
     FilterService,
     AuthService,
+    HarvesterService,
     AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
     }
+  ],
+  entryComponents: [
+    PublicationAdderComponent
   ],
   bootstrap: [AppComponent]
 })

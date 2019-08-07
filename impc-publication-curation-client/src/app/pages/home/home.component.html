@@ -5,7 +5,7 @@
       <span>{{category.name}} ({{ category.count }})</span>
     </ng-template>
     <div class="tab-content">
-      <impc-publication-table [resultsLength]="category.count" [filter]="category.filter" [showActions]="showActions"></impc-publication-table>
+      <impc-publication-table [resultsLength]="category.count" [status]="category.status" [showActions]="showActions"></impc-publication-table>
     </div>
   </mat-tab>
 </mat-tab-group>

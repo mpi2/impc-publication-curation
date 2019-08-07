@@ -8,6 +8,8 @@ export const environment = {
   publicationsApiUrl: 'http://localhost:8080/graphql',
   alleleApiUrl: 'http://localhost:8080/alleles',
   authUrl: 'http://localhost:8080/token/generate-token',
+  harvesterUrl: 'http://localhost:8000/harvest',
+  submissionUrl: 'http://localhost:8080/submit',
   tokenKey: 'AuthToken',
   title: 'INFRAFRONTIER - Publications Curation',
   confirmViaEmail: true,
@@ -24,23 +26,27 @@ export const environment = {
   categories: [
     {
       name: 'Pending',
-      filter: {reviewed: false, pendingEmailConfirmation: false},
-      icon: 'assignment'
+      status: 'pending',
+      icon: 'assignment',
+      color: 'warn'
     },
     {
       name: 'Waiting for email confirmation',
-      filter: {pendingEmailConfirmation: true},
-      icon: 'markunread_mailbox'
+      status: 'pendingEmailConfirmation',
+      icon: 'markunread_mailbox',
+      color: 'primary'
     },
     {
       name: 'False positive',
-      filter: {falsePositive: true},
-      icon: 'assignment_late'
+      status: 'falsePositive',
+      icon: 'assignment_late',
+      color: 'warn'
     },
     {
       name: 'Reviewed',
-      filter: {reviewed: true, falsePositive: false},
-      icon: 'assignment_turned_in'
+      status: 'reviewed',
+      icon: 'assignment_turned_in',
+      color: 'accent'
     }
   ]
 };

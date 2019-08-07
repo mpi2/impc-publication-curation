@@ -33,10 +33,7 @@ public class Publication {
     private ArrayList<FullTextUrl> fullTextUrlList;
     private ArrayList<AlleleRef> alleles;
     private String datasource;
-    private Boolean reviewed;
     private Boolean consortiumPaper;
-    private Boolean falsePositive;
-    private Boolean pendingEmailConfirmation;
     private String orderId;
     private ArrayList<Fragment> fragments;
     private ArrayList<Citation> citations;
@@ -45,5 +42,6 @@ public class Publication {
     private Date firstPublicationDate;
     private ArrayList<AlleleRef> alleleCandidates;
     private ArrayList<Correspondence> correspondence;
+    private String status;
 
 }

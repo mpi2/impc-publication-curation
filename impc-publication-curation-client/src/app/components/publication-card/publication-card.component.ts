@@ -22,29 +22,28 @@ export class PublicationCardComponent implements OnInit {
   showActions = false;
 
   showConsortiumCheck = true;
-  showEmailConfirm = false;
   showOrderId = false;
+  categories = [];
 
   constructor(
     private publicationService: PublicationService,
     private snackBar: MatSnackBar
   ) {
     this.showConsortiumCheck = environment.consortiumPaperMarker;
-    this.showEmailConfirm = environment.confirmViaEmail;
     this.showOrderId = environment.showOrderID;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.categories = environment.categories.filter(cat => cat.status !== this.publication.status);
+  }
 
-  setStatus(reviewed, falsePositive, waitingForEmail = false, status = '', undoing = false) {
+  setStatus(publicationStatus, status = '', undoing = false) {
     this.publicationService
       .setPublicationStatus(
         this.publication.pmid,
-        reviewed,
+        publicationStatus,
         this.publication.alleles,
-        falsePositive,
         this.publication.consortiumPaper,
-        waitingForEmail,
         this.publication.orderId
       )
       .pipe(
@@ -81,7 +80,7 @@ export class PublicationCardComponent implements OnInit {
     });
     snackBarRef.onAction().subscribe(_ => {
       if (!hideAction) {
-        this.setStatus(this.publication.reviewed, this.publication.falsePositive, this.publication.pendingEmailConfirmation, status, true);
+        this.setStatus(this.publication.status, status, true);
       }
     });
   }

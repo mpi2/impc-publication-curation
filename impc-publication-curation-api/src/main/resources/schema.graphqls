@@ -4,22 +4,21 @@ schema {
 }
 
 type Query {
-    publications(start: Int, size: Int, reviewed: Boolean, falsePositive: Boolean, keywords: [String],
+    publications(start: Int, size: Int, status: String, keywords: [String],
                  consortiumPaper: Boolean, alleles: Boolean, cites: Boolean,
                  orderBy: PublicationOrderByInput, search: String,
-                 publicationYearFrom: Int, publicationYearTo: Int, pendingEmailConfirmation: Boolean): [Publication]
+                 publicationYearFrom: Int, publicationYearTo: Int): [Publication]
     publication(id: String): Publication
     publicationByPmid(pmid: String): Publication
-    publicationsByReviewed(reviewed: Boolean, start: Int, size: Int): [Publication]
-    count(reviewed: Boolean, falsePositive: Boolean, keywords: [String], consortiumPaper: Boolean, alleles: Boolean, cites: Boolean, search: String, publicationYearFrom: Int, publicationYearTo: Int, pendingEmailConfirmation: Boolean): Int
+    publicationsByReviewed(status: String, start: Int, size: Int): [Publication]
+    count(status: String, keywords: [String], consortiumPaper: Boolean, alleles: Boolean, cites: Boolean, search: String, publicationYearFrom: Int, publicationYearTo: Int): Int
 }
 
 type Mutation {
-    updateReviewed(pmid: String!, reviewed: Boolean, alleles: [AlleleRefInput], falsePositive: Boolean, consortiumPaper: Boolean, pendingEmailConfirmation: Boolean, alleleCandidates: [AlleleRefInput], orderId: String): Publication
+    updateReviewed(pmid: String!, status: String, alleles: [AlleleRefInput], consortiumPaper: Boolean, alleleCandidates: [AlleleRefInput], orderId: String): Publication
 }
 
 type Publication {
-    id: String
     title: String
     pmid: String
     pmcid: String
@@ -34,8 +33,6 @@ type Publication {
     fullTextUrlList: [FullTextUrl]
     alleles: [AlleleRef]
     datasource: String
-    reviewed: Boolean
-    falsePositive: Boolean
     fragments: [Fragment]
     citations: [Citation]
     cites: [String]
@@ -44,8 +41,8 @@ type Publication {
     alleleCandidates: [AlleleRef]
     consortiumPaper: Boolean
     correspondence: [Correspondence]
-    pendingEmailConfirmation: Boolean
     orderId: String
+    status: String
 }
 
 type Correspondence {
@@ -56,7 +53,6 @@ type Correspondence {
 
 
 input PublicationFilter {
-    id: String
     title: String
     pmid: String
     pmcid: String
@@ -66,12 +62,11 @@ input PublicationFilter {
     pageInfo: String
     abstractText: String
     datasource: String
-    reviewed: Boolean
-    falsePositive: Boolean
     keyword: String
     firstPublicationDate: String
     authorList: [AuthorFilter]
     consortiumPaper: Boolean
+    status: String
 }
 
 input AuthorFilter {
