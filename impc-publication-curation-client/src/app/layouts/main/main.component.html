@@ -45,6 +45,11 @@
       <main class="content">
         <router-outlet></router-outlet>
       </main>
+      <div *ngIf="isLoggedIn" class="publication-adder">
+        <button mat-fab (click)="openDialog()" color="accent" class="add-button">
+            <mat-icon>add</mat-icon>
+        </button>
+      </div>
       <footer>
         <impc-footer></impc-footer>
       </footer>

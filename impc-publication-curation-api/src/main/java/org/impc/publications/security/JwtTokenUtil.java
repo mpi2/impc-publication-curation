@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.impc.publications.models.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -13,12 +14,15 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.function.Function;
 
-import static org.impc.publications.models.Constants.ACCESS_TOKEN_VALIDITY_SECONDS;
-import static org.impc.publications.models.Constants.SIGNING_KEY;
-
 
 @Component
 public class JwtTokenUtil implements Serializable {
+
+    @Value("${signingKey}")
+    private String SIGNING_KEY;
+
+    @Value("${tokenValiditySeconds}")
+    private long ACCESS_TOKEN_VALIDITY_SECONDS;
 
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
@@ -55,7 +59,7 @@ public class JwtTokenUtil implements Serializable {
         claims.put("scopes", Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")));
         return Jwts.builder()
                 .setClaims(claims)
-                .setIssuer("http://devglan.com")
+                .setIssuer("https://www.mousephenotype.org")
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALIDITY_SECONDS*1000))
                 .signWith(SignatureAlgorithm.HS256, SIGNING_KEY)

@@ -3,7 +3,10 @@
   <div class="search-form">
     <mat-form-field>
       <input matInput placeholder="Search" type="text" formControlName="search">
-      <mat-icon matSuffix>search</mat-icon>
+      <mat-icon *ngIf="!filterForm.controls.search.value" matSuffix>search</mat-icon>
+      <button mat-button *ngIf="filterForm.controls.search.value" matSuffix mat-icon-button aria-label="Clear" (click)="filterForm.controls.search.reset()">
+          <mat-icon>close</mat-icon>
+        </button>
     </mat-form-field>
   </div>
   <mat-expansion-panel class="sidenav-section" [expanded]="filter.url === undefined" *ngFor="let filter of filters" >

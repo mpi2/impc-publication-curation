@@ -22,25 +22,25 @@ public class GraphQLQuery implements GraphQLQueryResolver {
     @Autowired
     private PublicationRepository publicationRepository;
 
-    public List<Publication> getPublications(int start, int size, Boolean reviewed, Boolean falsePositive,
+    public List<Publication> getPublications(int start, int size, String status,
                                              ArrayList<String> keywords, Boolean consortiumPaper,
-                                             Boolean alleles, Boolean cites, PublicationOrderBy publicationOrderBy, String search, int publicationYearFrom, int publicationYearTo, Boolean pendingEmailConfirmation) {
+                                             Boolean alleles, Boolean cites, PublicationOrderBy publicationOrderBy,
+                                             String search, int publicationYearFrom, int publicationYearTo) {
         List<Publication> target = new ArrayList<>();
-        System.out.println(new Sort(this.getDirection(publicationOrderBy), this.getProperty(publicationOrderBy)));
         PageRequest pageRequest = PageRequest.of(start, size, new Sort(this.getDirection(publicationOrderBy), this.getProperty(publicationOrderBy)));
-        publicationRepository.findPublications(pageRequest, reviewed, falsePositive, keywords, consortiumPaper, alleles, cites, publicationYearFrom, publicationYearTo, search, pendingEmailConfirmation).forEach(target::add);
+        publicationRepository.findPublications(pageRequest, status, keywords, consortiumPaper, alleles, cites, publicationYearFrom, publicationYearTo, search).forEach(target::add);
         return target;
     }
 
-    public List<Publication> getPublicationsByReviewed(int start, int size, boolean reviewed) {
+    public List<Publication> getPublicationsByReviewed(int start, int size, String status) {
         List<Publication> target = new ArrayList<>();
         PageRequest pageRequest = PageRequest.of(start, size, new Sort(Sort.Direction.DESC, "firstPublicationDate"));
-        publicationRepository.findPublicationsByReviewed(reviewed, pageRequest).forEach(target::add);
+        publicationRepository.findPublicationsByStatus(status, pageRequest).forEach(target::add);
         return target;
     }
 
-    public int getCount(Boolean reviewed, Boolean falsePositive, ArrayList<String> keywords, Boolean consortiumPaper, Boolean alleles, Boolean cites, String search, int publicationYearFrom, int publicationYearTo, Boolean pendingEmailConfirmation) {
-        return java.lang.Math.toIntExact(publicationRepository.countPublications(reviewed, falsePositive, keywords, consortiumPaper, alleles, cites, publicationYearFrom, publicationYearTo, search, pendingEmailConfirmation));
+    public int getCount(String status, ArrayList<String> keywords, Boolean consortiumPaper, Boolean alleles, Boolean cites, String search, int publicationYearFrom, int publicationYearTo) {
+        return java.lang.Math.toIntExact(publicationRepository.countPublications(status, keywords, consortiumPaper, alleles, cites, publicationYearFrom, publicationYearTo, search));
     }
 
     public Publication getPublication(String id) {

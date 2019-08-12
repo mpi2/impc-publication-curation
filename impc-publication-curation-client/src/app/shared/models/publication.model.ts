@@ -47,9 +47,8 @@ export interface Publication {
   pmid: string;
   pmcid: string;
   datasource: string;
-  falsePositive: boolean;
   consortiumPaper: boolean;
-  reviewed: boolean;
+  status: string;
   alleles: Allele[];
   fullTextUrlList: FullTextUrlList[];
   grantsList: GrantsList[];
@@ -61,8 +60,9 @@ export interface Publication {
   firstPublicationDate: string;
   alleleCandidates: any[];
   correspondence: Correspondence[];
-  pendingEmailConfirmation: boolean;
-  orderId: string;
+  orderIds: string[];
+  emmaIds: string[];
+  comment: string;
 }
 
 export interface GraphQLResponse {

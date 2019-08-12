@@ -43,5 +43,6 @@ export class FilterComponent implements OnInit {
       return filter;
     });
     this.filterForm.valueChanges.subscribe(value => this.filterService.emitFilterChange(value));
+    this.filterService.searchChange.subscribe(value => this.filterForm.controls.search.setValue(value));
   }
 }

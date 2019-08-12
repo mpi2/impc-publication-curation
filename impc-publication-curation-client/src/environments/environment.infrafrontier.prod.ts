@@ -8,11 +8,14 @@ export const environment = {
   publicationsApiUrl: '/mi/infrafrontier/publications/api/graphql',
   alleleApiUrl: '/mi/infrafrontier/publications/api/alleles',
   authUrl: '/mi/infrafrontier/publications/api/token/generate-token',
+  harvesterUrl: '/mi/infrafrontier/publications/api/harvest',
+  submissionUrl: '/mi/infrafrontier/publications/api/submit',
   tokenKey: 'AuthToken',
   title: 'INFRAFRONTIER - Publications Curation',
   confirmViaEmail: true,
   consortiumPaperMarker: false,
   showOrderID: true,
+  harvestAlleles: true,
   filters: [
     {
       field: 'publicationYear',
@@ -24,23 +27,27 @@ export const environment = {
   categories: [
     {
       name: 'Pending',
-      filter: {reviewed: false, pendingEmailConfirmation: false},
-      icon: 'assignment'
+      status: 'pending',
+      icon: 'assignment',
+      color: 'warn'
     },
     {
       name: 'Waiting for email confirmation',
-      filter: {pendingEmailConfirmation: true},
-      icon: 'markunread_mailbox'
+      status: 'pendingEmailConfirmation',
+      icon: 'markunread_mailbox',
+      color: 'primary'
     },
     {
       name: 'False positive',
-      filter: {falsePositive: true},
-      icon: 'assignment_late'
+      status: 'falsePositive',
+      icon: 'assignment_late',
+      color: 'warn'
     },
     {
       name: 'Reviewed',
-      filter: {reviewed: true, falsePositive: false},
-      icon: 'assignment_turned_in'
+      status: 'reviewed',
+      icon: 'assignment_turned_in',
+      color: 'accent'
     }
   ]
 };

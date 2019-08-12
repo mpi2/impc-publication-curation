@@ -5,6 +5,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 })
 export class FilterService {
   filterChange: EventEmitter<any> = new EventEmitter();
+  searchChange: EventEmitter<any> = new EventEmitter();
   public filter = {};
 
   constructor() {}
@@ -16,5 +17,9 @@ export class FilterService {
 
   getFilterChange() {
     return this.emitFilterChange;
+  }
+
+  changeSearchValue(text) {
+    this.searchChange.emit(text);
   }
 }

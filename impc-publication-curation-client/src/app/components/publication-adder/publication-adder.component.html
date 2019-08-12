@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Add publication</h1>
+<div mat-dialog-content>
+  <div>
+      <mat-form-field>
+          <input matInput [(ngModel)]="data.pmid" placeholder="PubMed ID" [disabled]="harvesting" >
+          <mat-spinner *ngIf="harvesting" matSuffix mode="indeterminate" diameter="17"></mat-spinner>
+        </mat-form-field>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-flat-button (click)="onNoClick()" color="warn" [disabled]="harvesting">CANCEL</button>
+  <button mat-flat-button (click)="submit(data.pmid)" cdkFocusInitial color="accent" [disabled]="harvesting">SUBMIT</button>
+</div>

@@ -1,6 +1,7 @@
 package org.impc.publications.repositories;
 
 import com.mongodb.DBCollection;
+import org.bson.Document;
 import org.impc.publications.models.Allele;
 import org.impc.publications.models.AlleleRef;
 import org.impc.publications.models.Journal;
@@ -15,8 +16,13 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class PublicationRepositoryCustomImpl implements PublicationRepositoryCustom  {
     private final MongoTemplate mongoTemplate;
@@ -28,22 +34,20 @@ public class PublicationRepositoryCustomImpl implements PublicationRepositoryCus
 
 
     @Override
-    public Page<Publication> findPublications(Pageable pageable, Boolean reviewed, Boolean falsePositive, ArrayList<String> keywords, Boolean consortiumPaper, Boolean hasAlleles, Boolean citeConsortiumPaper, Integer pubYearFrom, Integer pubYearTo, String search, Boolean pendingEmailConfirmation) {
-        Query query = generateQuery(reviewed, falsePositive, keywords, consortiumPaper, hasAlleles, citeConsortiumPaper, pubYearFrom, pubYearTo, search, pendingEmailConfirmation);
+    public Page<Publication> findPublications(Pageable pageable, String status, ArrayList<String> keywords, Boolean consortiumPaper, Boolean hasAlleles, Boolean citeConsortiumPaper, Integer pubYearFrom, Integer pubYearTo, String search) {
+        Query query = generateQuery(status, keywords, consortiumPaper, hasAlleles, citeConsortiumPaper, pubYearFrom, pubYearTo, search);
         query.with(pageable.getSort());
         List<Publication> publications = mongoTemplate.find(query.limit(pageable.getPageSize()).skip(pageable.getOffset()), Publication.class);
         return PageableExecutionUtils.getPage(publications, pageable, () -> mongoTemplate.count(query, Publication.class));
     }
 
-    private Query generateQuery(Boolean reviewed, Boolean falsePositive, ArrayList<String> keywords, Boolean consortiumPaper, Boolean hasAlleles, Boolean citeConsortiumPaper, Integer pubYearFrom, Integer pubYearTo, String search, Boolean pendingEmailConfirmation) {
+    private Query generateQuery(String status, ArrayList<String> keywords, Boolean consortiumPaper, Boolean hasAlleles, Boolean citeConsortiumPaper, Integer pubYearFrom, Integer pubYearTo, String search) {
         final Query query = new Query();
         final List<Criteria> criteria = new ArrayList<>();
-        if(reviewed != null) {
-            criteria.add(Criteria.where("reviewed").is(reviewed));
+        if(status != null) {
+            criteria.add(Criteria.where("status").is(status));
         }
-        if(falsePositive != null) {
-            criteria.add(Criteria.where("falsePositive").is(falsePositive));
-        }
+
         if(keywords != null) {
             criteria.add(Criteria.where("keyword").in(keywords));
         }
@@ -57,17 +61,20 @@ public class PublicationRepositoryCustomImpl implements PublicationRepositoryCus
             criteria.add(Criteria.where("cites").gt(new ArrayList<Allele>()));
         }
         if(search != null) {
-            criteria.add(Criteria.where("title").regex(search));
+            criteria.add(new Criteria().orOperator(
+                    Criteria.where("title").regex(search),
+                    Criteria.where("fragments.mentions").regex(search),
+                    Criteria.where("authorString").regex(search),
+                    Criteria.where("journalInfo.journal.title").regex(search),
+                    Criteria.where("pmid").is(search)
+                    )
+            );
         }
         if(pubYearFrom != null) {
             criteria.add(Criteria.where("pubYear").gte(pubYearFrom));
         }
         if(pubYearTo != null && pubYearTo != 0) {
             criteria.add(Criteria.where("pubYear").lte(pubYearTo));
-        }
-
-        if(pendingEmailConfirmation != null) {
-            criteria.add(Criteria.where("pendingEmailConfirmation").is(pendingEmailConfirmation));
         }
 
         if(!criteria.isEmpty()) {
@@ -77,8 +84,8 @@ public class PublicationRepositoryCustomImpl implements PublicationRepositoryCus
     }
 
     @Override
-    public Long countPublications(Boolean reviewed, Boolean falsePositive, ArrayList<String> keywords, Boolean consortiumPaper, Boolean hasAlleles, Boolean citeConsortiumPaper, Integer pubYearFrom, Integer pubYearTo, String search, Boolean pendingEmailConfirmation) {
-        Query query = generateQuery(reviewed, falsePositive, keywords, consortiumPaper, hasAlleles, citeConsortiumPaper,  pubYearFrom,  pubYearTo, search, pendingEmailConfirmation);
+    public Long countPublications(String status, ArrayList<String> keywords, Boolean consortiumPaper, Boolean hasAlleles, Boolean citeConsortiumPaper, Integer pubYearFrom, Integer pubYearTo, String search) {
+        Query query = generateQuery(status, keywords, consortiumPaper, hasAlleles, citeConsortiumPaper,  pubYearFrom,  pubYearTo, search);
         return this.mongoTemplate.count(query, Publication.class);
     }
     @Override
@@ -93,15 +100,39 @@ public class PublicationRepositoryCustomImpl implements PublicationRepositoryCus
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @Override
-    public boolean updatedStatus(String pmid, boolean reviewed, ArrayList<AlleleRef> alleles, boolean falsePositive, boolean consortiumPaper, boolean pendingEmailConfirmation, ArrayList<AlleleRef> alleleCandidates, String orderId) {
+    public boolean updatedStatus(String pmid, String status, ArrayList<AlleleRef> alleles,
+                                 boolean consortiumPaper, ArrayList<AlleleRef> alleleCandidates,
+                                 ArrayList<String> orderIds, ArrayList<String> emmaIds, String comment) {
         Query query = new Query(new Criteria("pmid").is(pmid));
-        Update update = new Update().set("reviewed", reviewed)
+        Update update = new Update().set("status", status)
                 .set("alleles", alleles)
-                .set("falsePositive", falsePositive)
                 .set("consortiumPaper", consortiumPaper)
-                .set("pendingEmailConfirmation", pendingEmailConfirmation)
                 .set("alleleCandidates", alleleCandidates)
-                .set("orderId", orderId);
+                .set("orderIds", orderIds)
+                .set("emmaIds", emmaIds)
+                .set("comment", comment);
         return mongoTemplate.updateFirst(query, update, "references").getModifiedCount() == 1;
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @Override
+    public String insertPublicationJson(String pmid, String publicationJson) {
+        String response = "";
+        if(!this.mongoTemplate.exists(new Query(new Criteria("pmid").is(pmid)), "references")) {
+            Document doc = Document.parse(publicationJson);
+            String publicationDateStr = (String) doc.remove("firstPublicationDate");
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            try {
+                doc.put("firstPublicationDate", df.parse(publicationDateStr));
+                mongoTemplate.insert(doc, "references");
+                response = "created";
+            } catch (ParseException e) {
+                e.printStackTrace();
+                response = "failed";
+            }
+        } else {
+            response = "exists";
+        }
+        return response;
     }
 }

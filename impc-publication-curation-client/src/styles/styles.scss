@@ -1,3 +1,4 @@
+@import "~@fortawesome/fontawesome-free/css/all.css";
 @import "variables";
 
 html, body { height: 100%; }
@@ -21,6 +22,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .mat-step-icon-state-edit {
   background-color: rgba(0, 0, 0, 0.54) !important;
+}
+
+mat-icon.fa, mat-icon.fas {
+  font-size: 20px;
 }
 
 // impc-keyword-list > mat-chip-list > .mat-chip-list-wrapper {

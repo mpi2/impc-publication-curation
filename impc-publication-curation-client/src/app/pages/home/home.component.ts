@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
       )
         .pipe(
           startWith({}),
-          switchMap(() => this.getCount({ ...category.filter, ...this.filterService.filter }))
+          switchMap(() => this.getCount({ status: category.status, ...this.filterService.filter }))
         )
         .subscribe(count => {
           category.count = count;

@@ -1,5 +1,6 @@
 package org.impc.publications.repositories;
 
+import org.bson.Document;
 import org.impc.publications.models.AlleleRef;
 import org.impc.publications.models.Journal;
 import org.impc.publications.models.Publication;
@@ -8,12 +9,20 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public interface PublicationRepositoryCustom {
 
-    Page<Publication> findPublications(Pageable pageable, Boolean reviewed, Boolean falsePositive, ArrayList<String> keywords, Boolean consortiumPaper, Boolean hasAlleles, Boolean citeConsortiumPaper, Integer pubYearFrom, Integer pubYearTo, String search, Boolean pendingEmailConfirmation);
-    Long countPublications(Boolean reviewed, Boolean falsePositive, ArrayList<String> keywords, Boolean consortiumPaper, Boolean hasAlleles, Boolean citeConsortiumPaper, Integer pubYearFrom, Integer pubYearTo, String search, Boolean pendingEmailConfirmation);
+    Page<Publication> findPublications(Pageable pageable, String status, ArrayList<String> keywords,
+                                       Boolean consortiumPaper, Boolean hasAlleles, Boolean citeConsortiumPaper,
+                                       Integer pubYearFrom, Integer pubYearTo, String search);
+    Long countPublications(String status, ArrayList<String> keywords, Boolean consortiumPaper,
+                           Boolean hasAlleles, Boolean citeConsortiumPaper,
+                           Integer pubYearFrom, Integer pubYearTo, String search);
     List<String> getJournalNames();
     List<String> getCitedGenes();
-    boolean updatedStatus(String pmid, boolean reviewed, ArrayList<AlleleRef> alleles, boolean falsePositive, boolean consortiumPaper, boolean pendingEmailConfirmation, ArrayList<AlleleRef> alleleCandidates, String orderId);
+    boolean updatedStatus(String pmid, String status, ArrayList<AlleleRef> alleles,
+                          boolean consortiumPaper, ArrayList<AlleleRef> alleleCandidates,
+                          ArrayList<String> orderIds,  ArrayList<String> emmaIds, String comment);
+    String insertPublicationJson(String pmid, String publicationJson);
 }

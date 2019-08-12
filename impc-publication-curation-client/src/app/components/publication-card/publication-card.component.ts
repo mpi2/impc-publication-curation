@@ -22,30 +22,31 @@ export class PublicationCardComponent implements OnInit {
   showActions = false;
 
   showConsortiumCheck = true;
-  showEmailConfirm = false;
   showOrderId = false;
+  categories = [];
 
   constructor(
     private publicationService: PublicationService,
     private snackBar: MatSnackBar
   ) {
     this.showConsortiumCheck = environment.consortiumPaperMarker;
-    this.showEmailConfirm = environment.confirmViaEmail;
     this.showOrderId = environment.showOrderID;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.categories = environment.categories.filter((cat: any) => cat.status !== this.publication.status);
+  }
 
-  setStatus(reviewed, falsePositive, waitingForEmail = false, status = '', undoing = false) {
+  setStatus(publicationStatus, status = '', undoing = false) {
     this.publicationService
       .setPublicationStatus(
         this.publication.pmid,
-        reviewed,
+        publicationStatus,
         this.publication.alleles,
-        falsePositive,
         this.publication.consortiumPaper,
-        waitingForEmail,
-        this.publication.orderId
+        this.publication.orderIds,
+        this.publication.emmaIds,
+        this.publication.comment
       )
       .pipe(
         map(() => observableOf(true)),
@@ -75,13 +76,13 @@ export class PublicationCardComponent implements OnInit {
 
   openSnackBar(message, hideAction, status) {
     const action = hideAction ? undefined : 'UNDO';
-    message = message.charAt(0).toUpperCase() + message.slice(1)
+    message = message.charAt(0).toUpperCase() + message.slice(1);
     const snackBarRef = this.snackBar.open(message, action, {
       duration: 2000
     });
     snackBarRef.onAction().subscribe(_ => {
       if (!hideAction) {
-        this.setStatus(this.publication.reviewed, this.publication.falsePositive, this.publication.pendingEmailConfirmation, status, true);
+        this.setStatus(this.publication.status, status, true);
       }
     });
   }

@@ -13,7 +13,7 @@ import java.util.List;
 public interface PublicationRepository extends MongoRepository<Publication, ObjectId>, PublicationRepositoryCustom {
     Publication findPublicationById(String id);
     Publication findPublicationByPmid(String pmid);
-    Page<Publication> findPublicationsByReviewed(boolean reviewed, Pageable pageable);
-    int countPublicationsByReviewed(boolean reviewed);
+    Page<Publication> findPublicationsByStatus(String status, Pageable pageable);
+    int countPublicationsByStatus(String status);
 
 }
