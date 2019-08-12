@@ -13,8 +13,10 @@ export class QueryHelper {
       pmcid
       datasource
       consortiumPaper
-      orderId
+      orderIds
+      emmaIds
       status
+      comment
       correspondence {
         authors
         emails
@@ -67,8 +69,10 @@ export class QueryHelper {
     pmid,
     status = 'pending',
     consortiumPaper = false,
-    orderId = null,
-    allelesString = ''
+    orderIdsString = '',
+    emmaIdsString = '',
+    allelesString = '',
+    comment = ''
   ) => `
   mutation {
     updateReviewed(
@@ -76,7 +80,9 @@ export class QueryHelper {
     status: \\"${status}\\",
     alleles: ${allelesString},
     consortiumPaper: ${consortiumPaper},
-    orderId: \\"${orderId}\\",
+    orderIds: ${orderIdsString},
+    emmaIds: ${emmaIdsString},
+    comment: \\"${comment ? comment.replace(/\"/gi, '\\\\\\\"') : ''}\\",
     alleleCandidates: []
     ){
       title

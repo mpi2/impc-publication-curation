@@ -1,10 +1,11 @@
+import { environment } from './../../../environments/environment';
 import { PublicationService } from './../../shared/services/publication.service';
 import { HarvesterService } from './../../shared/services/harvester.service';
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { flatMap, catchError } from 'rxjs/operators';
 import { of as observableOf } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
+
 
 @Component({
   selector: 'impc-publication-adder',
@@ -27,7 +28,7 @@ export class PublicationAdderComponent {
     this.dialogRef.disableClose = true;
     this.response.pmid = pmid;
     this.harvester
-      .harvestReference(pmid, false)
+      .harvestReference(pmid, environment.harvestAlleles)
       .pipe(
         flatMap(reference =>
           this.publications.submitPublication(pmid, reference)

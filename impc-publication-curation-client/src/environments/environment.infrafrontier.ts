@@ -15,6 +15,7 @@ export const environment = {
   confirmViaEmail: true,
   consortiumPaperMarker: false,
   showOrderID: true,
+  harvestAlleles: true,
   filters: [
     {
       field: 'publicationYear',

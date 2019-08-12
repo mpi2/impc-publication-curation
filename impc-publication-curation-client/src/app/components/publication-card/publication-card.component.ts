@@ -34,7 +34,7 @@ export class PublicationCardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.categories = environment.categories.filter(cat => cat.status !== this.publication.status);
+    this.categories = environment.categories.filter((cat: any) => cat.status !== this.publication.status);
   }
 
   setStatus(publicationStatus, status = '', undoing = false) {
@@ -44,7 +44,9 @@ export class PublicationCardComponent implements OnInit {
         publicationStatus,
         this.publication.alleles,
         this.publication.consortiumPaper,
-        this.publication.orderId
+        this.publication.orderIds,
+        this.publication.emmaIds,
+        this.publication.comment
       )
       .pipe(
         map(() => observableOf(true)),
@@ -74,7 +76,7 @@ export class PublicationCardComponent implements OnInit {
 
   openSnackBar(message, hideAction, status) {
     const action = hideAction ? undefined : 'UNDO';
-    message = message.charAt(0).toUpperCase() + message.slice(1)
+    message = message.charAt(0).toUpperCase() + message.slice(1);
     const snackBarRef = this.snackBar.open(message, action, {
       duration: 2000
     });

@@ -57,6 +57,8 @@ import { FooterComponent } from './components/footer/footer.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { PublicationAdderComponent } from './components/publication-adder/publication-adder.component';
 import {MatDialogModule, MatDialog} from '@angular/material/dialog';
+import { OrderIdListComponent } from './components/order-id-list/order-id-list.component';
+import { EmmaIdListComponent } from './components/emma-id-list/emma-id-list.component';
 
 
 @NgModule({
@@ -76,7 +78,9 @@ import {MatDialogModule, MatDialog} from '@angular/material/dialog';
     ReadMoreComponent,
     LoginComponent,
     FooterComponent,
-    PublicationAdderComponent
+    PublicationAdderComponent,
+    OrderIdListComponent,
+    EmmaIdListComponent
   ],
   imports: [
     BrowserModule,

@@ -14,7 +14,8 @@ export class PublicationService {
 
   constructor(private http: HttpClient) {}
 
-  submitPublication = (pmid, reference) => this.http.post(`${environment.submissionUrl}/${pmid}`, reference);
+  submitPublication = (pmid, reference) =>
+    this.http.post(`${environment.submissionUrl}/${pmid}`, reference);
 
   getPublications(
     start = 1,
@@ -29,7 +30,7 @@ export class PublicationService {
       size,
       this.parseFilter(filter),
       orderByField,
-      orderByDirection,
+      orderByDirection
     );
     return this.http
       .post(
@@ -100,9 +101,13 @@ export class PublicationService {
     status = '',
     alleles = [],
     consortiumPaper = false,
-    orderId = null
+    orderIds = [],
+    emmaIds = [],
+    comment = ''
   ) {
     let allelesString = '';
+    let orderIdsString = '';
+    let emmaIdsString = '';
     alleles.forEach(allele => {
       const alleleref = Object.assign({}, allele);
       delete alleleref.candidate;
@@ -111,13 +116,19 @@ export class PublicationService {
     });
     allelesString =
       '[' + allelesString.substring(0, allelesString.length - 2) + ']';
+    orderIdsString = orderIds.join('\\", \\"');
+    orderIdsString = orderIds.length > 0 ? '[\\"' + orderIdsString + '\\"]' : '[]';
+    emmaIdsString = emmaIds.join('\\", \\"');
+    emmaIdsString = emmaIds.length > 0 ? '[\\"' + emmaIdsString + '\\"]' : '[]';
     const queryHelper = new QueryHelper();
     const query = queryHelper.setStatusQuery(
       pmid,
       status,
       consortiumPaper,
-      orderId,
-      allelesString
+      orderIdsString,
+      emmaIdsString,
+      allelesString,
+      comment
     );
     return this.http
       .post(

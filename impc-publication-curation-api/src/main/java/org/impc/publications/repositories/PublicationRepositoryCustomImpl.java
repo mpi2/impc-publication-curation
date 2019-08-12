@@ -100,13 +100,17 @@ public class PublicationRepositoryCustomImpl implements PublicationRepositoryCus
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @Override
-    public boolean updatedStatus(String pmid, String status, ArrayList<AlleleRef> alleles, boolean consortiumPaper, ArrayList<AlleleRef> alleleCandidates, String orderId) {
+    public boolean updatedStatus(String pmid, String status, ArrayList<AlleleRef> alleles,
+                                 boolean consortiumPaper, ArrayList<AlleleRef> alleleCandidates,
+                                 ArrayList<String> orderIds, ArrayList<String> emmaIds, String comment) {
         Query query = new Query(new Criteria("pmid").is(pmid));
         Update update = new Update().set("status", status)
                 .set("alleles", alleles)
                 .set("consortiumPaper", consortiumPaper)
                 .set("alleleCandidates", alleleCandidates)
-                .set("orderId", orderId);
+                .set("orderIds", orderIds)
+                .set("emmaIds", emmaIds)
+                .set("comment", comment);
         return mongoTemplate.updateFirst(query, update, "references").getModifiedCount() == 1;
     }
 

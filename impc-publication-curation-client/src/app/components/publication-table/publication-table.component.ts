@@ -130,26 +130,45 @@ export class PublicationTableComponent implements AfterViewInit, OnInit {
 
   downloadCsv() {
     this.publicationService
-      .getPublications(0, this.resultsLength, {
-        status,
-        ...this.filterService.filter
-      })
+      .getPublications(0, this.resultsLength, { status: this.status, ...this.filterService.filter })
       .subscribe(publications => {
-        const csvPublications = publications.map(publication => {
+        const csvPublications = [];
+        publications.forEach(publication => {
           const csvPublication: any = {};
-          csvPublication.orderId = publication.orderId
-            ? publication.orderId
-            : '';
           csvPublication.pmid = publication.pmid;
           csvPublication.title = publication.title;
           csvPublication.alleles = publication.alleles
             .map(allele => allele.alleleSymbol)
             .join('; ');
-          return csvPublication;
+          if (publication.orderIds.length > 0) {
+            publication.orderIds.forEach(orderId => {
+              if (orderId === 'null') {
+                return;
+              }
+              const csvRecord = {... csvPublication};
+              csvRecord.orderId = orderId;
+              csvRecord.emmaId = '';
+              csvPublications.push(csvRecord);
+            });
+          }
+          if (publication.emmaIds.length > 0) {
+            publication.emmaIds.forEach(emmaId => {
+              const csvRecord = {... csvPublication};
+              csvRecord.orderId = '';
+              csvRecord.emmaId = emmaId;
+              csvPublications.push(csvRecord);
+            });
+          }
+
+          if (publication.emmaIds.length === 0 && publication.orderIds.length === 0) {
+            csvPublication.orderId = '';
+            csvPublication.emmaId = '';
+            csvPublications.push(csvPublication);
+          }
         });
         const csv = new ngxCsv(csvPublications, `${environment.title} report`, {
           showLabels: true,
-          headers: ['Order ID', 'pmid', 'title', 'alleles']
+          headers: ['pmid', 'title', 'alleles', 'Order ID', 'EMMA ID']
         });
       });
   }

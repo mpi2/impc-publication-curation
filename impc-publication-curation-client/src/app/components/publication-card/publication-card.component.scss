@@ -27,7 +27,6 @@ a {
   max-width: 95%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 10px;
 }
 
 .actions > button {
@@ -40,8 +39,7 @@ a {
 }
 
 .allele-list-wrapper {
-  margin-top: 10px;
-  width: 90%;
+  width: 95%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -53,4 +51,30 @@ a {
 
 .waiting {
   color: #f3b111;
+}
+
+.full-width {
+  width: 100%;
+}
+
+// textarea {
+//   resize: none;
+// }
+
+::ng-deep .mat-form-field.stretch-height,
+.mat-form-field.stretch-height ,
+.mat-form-field.stretch-height textarea {
+  height: 100%;
+}
+
+
+::ng-deep .mat-form-field.stretch-height .mat-form-field-wrapper {
+  height: calc(100% - 1.3em);
+}
+::ng-deep .mat-form-field.stretch-height .mat-form-field-infix {
+  height: calc(100% - 1.3em);
+}
+
+::ng-deep .mat-form-field.stretch-height .mat-form-field-wrapper .mat-form-field-flex {
+  height: calc(100% - 0.34375em);
 }

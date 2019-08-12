@@ -115,10 +115,6 @@
                     {
                       "replace": "src/app/components/footer/footer.component.html",
                       "with": "src/app/components/footer/footer.infrafrontier.component.html"
-                    },
-                    {
-                      "replace": "src/app/components/publication-card/",
-                      "with": "src/app/components/publication-card-infrafrontier/"
                     }
                   ],
                   "styles": [

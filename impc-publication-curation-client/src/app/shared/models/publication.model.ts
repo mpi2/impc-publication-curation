@@ -60,7 +60,9 @@ export interface Publication {
   firstPublicationDate: string;
   alleleCandidates: any[];
   correspondence: Correspondence[];
-  orderId: string;
+  orderIds: string[];
+  emmaIds: string[];
+  comment: string;
 }
 
 export interface GraphQLResponse {

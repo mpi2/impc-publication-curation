@@ -15,6 +15,7 @@ export const environment = {
   confirmViaEmail: false,
   consortiumPaperMarker: true,
   showOrderID: false,
+  harvestAlleles: false,
   filters: [
     {
       field: 'keywords',

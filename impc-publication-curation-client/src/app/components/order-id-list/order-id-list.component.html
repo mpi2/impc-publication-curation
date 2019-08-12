@@ -1,0 +1,15 @@
+<mat-form-field class="chip-list">
+  <mat-chip-list #chipList aria-label="Ids adder">
+    <mat-chip *ngFor="let orderId of publicationValue.orderIds" [selectable]="selectable"
+    [removable]="removable" (removed)="remove(orderId)">
+    {{orderId}}
+    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+  </mat-chip>
+  <input placeholder="Add order id..."
+  [matChipInputFor]="chipList"
+  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+  [matChipInputAddOnBlur]="addOnBlur"
+  (matChipInputTokenEnd)="add($event)">
+  <mat-icon matSuffix>receipt</mat-icon>
+</mat-chip-list>
+</mat-form-field>

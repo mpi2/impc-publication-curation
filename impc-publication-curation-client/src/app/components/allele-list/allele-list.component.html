@@ -15,6 +15,7 @@
       (paste)="pasteEvent($event)"
       [readonly]="!editable"
       />
+      <mat-icon matSuffix fontSet="fas" fontIcon="fa-dna"></mat-icon>
     </mat-chip-list>
     <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption (optionSelected)="addFromAutcomplete($event, textInput)">
       <mat-option *ngFor="let option of filteredOptions|async" [value]="option">
