@@ -23,9 +23,8 @@ public class GraphQLMutation implements GraphQLMutationResolver {
     public Publication updateReviewed(String pmid, String status, ArrayList<AlleleRef> alleles,
                                       boolean consortiumPaper,
                                       ArrayList<AlleleRef> alleleCandidates,
-                                      ArrayList<String> orderIds, ArrayList<String> emmaIds,
                                       String comment) {
-        this.publicationRepository.updatedStatus(pmid, status, alleles, consortiumPaper, alleleCandidates, orderIds, emmaIds, comment);
+        this.publicationRepository.updatedStatus(pmid, status, alleles, consortiumPaper, alleleCandidates, comment);
         return publicationRepository.findPublicationByPmid(pmid);
     }
 

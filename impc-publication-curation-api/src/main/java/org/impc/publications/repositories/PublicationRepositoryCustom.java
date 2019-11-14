@@ -22,7 +22,6 @@ public interface PublicationRepositoryCustom {
     List<String> getJournalNames();
     List<String> getCitedGenes();
     boolean updatedStatus(String pmid, String status, ArrayList<AlleleRef> alleles,
-                          boolean consortiumPaper, ArrayList<AlleleRef> alleleCandidates,
-                          ArrayList<String> orderIds,  ArrayList<String> emmaIds, String comment);
+                          boolean consortiumPaper, ArrayList<AlleleRef> alleleCandidates, String comment);
     String insertPublicationJson(String pmid, String publicationJson);
 }

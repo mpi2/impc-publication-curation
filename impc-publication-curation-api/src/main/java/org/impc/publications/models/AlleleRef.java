@@ -16,4 +16,6 @@ public class AlleleRef {
     private String project;
     private String alleleName;
     private String alleleSymbol;
+    private String orderId;
+    private String emmaId;
 }

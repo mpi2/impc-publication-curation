@@ -34,8 +34,6 @@ public class Publication {
     private ArrayList<AlleleRef> alleles;
     private String datasource;
     private Boolean consortiumPaper;
-    private ArrayList<String> orderIds;
-    private ArrayList<String> emmaIds;
     private ArrayList<Fragment> fragments;
     private ArrayList<Citation> citations;
     private ArrayList<String> cites;

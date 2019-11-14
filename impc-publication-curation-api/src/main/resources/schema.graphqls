@@ -15,7 +15,7 @@ type Query {
 }
 
 type Mutation {
-    updateReviewed(pmid: String!, status: String, alleles: [AlleleRefInput], consortiumPaper: Boolean, alleleCandidates: [AlleleRefInput], orderIds: [String], emmaIds: [String], comment: String): Publication
+    updateReviewed(pmid: String!, status: String, alleles: [AlleleRefInput], consortiumPaper: Boolean, alleleCandidates: [AlleleRefInput], comment: String): Publication
 }
 
 type Publication {
@@ -41,8 +41,6 @@ type Publication {
     alleleCandidates: [AlleleRef]
     consortiumPaper: Boolean
     correspondence: [Correspondence]
-    orderIds: [String]
-    emmaIds: [String]
     status: String
     comment: String
 }
@@ -133,6 +131,8 @@ type AlleleRef {
     project: String
     alleleName: String
     alleleSymbol: String
+    orderId: String
+    emmaId: String
 }
 
 input AlleleRefInput{
@@ -142,6 +142,8 @@ input AlleleRefInput{
     project: String
     alleleName: String
     alleleSymbol: String
+    orderId: String
+    emmaId: String
 }
 
 type FullTextUrl {

@@ -1,0 +1,24 @@
+@import "variables";
+
+.allele-chip-list {
+  width: 100%;
+}
+
+.form {
+  display: inline;
+}
+
+.mat-chip{
+  margin-top: 2px !important;
+  font-size: smaller;
+}
+
+.candidate {
+  border-style: solid;
+  border-color: $primary;
+  border-width: 1px;
+}
+
+.add-allele-btn {
+  margin: 5px;
+}

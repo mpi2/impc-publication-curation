@@ -5,6 +5,8 @@ export interface Allele {
   project: string;
   alleleName: string;
   alleleSymbol: string;
+  orderId: string;
+  emmaId: string;
 }
 
 export interface FullTextUrlList {
@@ -60,8 +62,6 @@ export interface Publication {
   firstPublicationDate: string;
   alleleCandidates: any[];
   correspondence: Correspondence[];
-  orderIds: string[];
-  emmaIds: string[];
   comment: string;
 }
 
