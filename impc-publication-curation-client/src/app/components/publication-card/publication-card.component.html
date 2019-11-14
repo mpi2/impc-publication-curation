@@ -33,9 +33,8 @@
     </div>
     <div class="allele-list-wrapper" fxLayout.gt-md="row" fxLayout="column" fxLayoutGap="10px">
       <div fxLayout="col wrap" fxLayoutGap="10px" fxFlex="65">
-        <impc-allele-list [alleles]="publication.alleles" [editable]="showActions" fxFlex="100"></impc-allele-list>
-        <impc-order-id-list [publication]="publication" fxFlex="calc(50% - 10px)" *ngIf="showOrderId && showActions"></impc-order-id-list>
-        <impc-emma-id-list [publication]="publication" fxFlex="calc(50% - 10px)" *ngIf="showOrderId && showActions"></impc-emma-id-list>
+        <impc-allele-list [alleles]="publication.alleles" [editable]="showActions" *ngIf="(!showOrderId && showActions) || (showOrderId && !showActions)" fxFlex="100"></impc-allele-list>
+        <impc-infrafrontier-allele-list [alleles]="publication.alleles" [editable]="showActions" *ngIf="showOrderId && showActions" fxFlex="100"></impc-infrafrontier-allele-list>
       </div>
       <div fxFlex="35" fxLayout="col" *ngIf="showActions">
         <div fxFlex="100">

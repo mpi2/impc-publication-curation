@@ -1,39 +1,39 @@
-import { FilterService } from './../../shared/services/filter.service';
-import { ngxCsv } from 'ngx-csv/ngx-csv';
-import { Publication } from '../../shared/models/publication.model';
+import { FilterService } from "./../../shared/services/filter.service";
+import { ngxCsv } from "ngx-csv/ngx-csv";
+import { Publication } from "../../shared/models/publication.model";
 import {
   AfterViewInit,
   Component,
   OnInit,
   ViewChild,
   Input
-} from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, SortDirection } from '@angular/material/sort';
-import { MatTable } from '@angular/material/table';
-import { PublicationService } from 'src/app/shared/services/publication.service';
-import { merge, of as observableOf } from 'rxjs';
-import { startWith, switchMap, map, catchError, filter } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
+} from "@angular/core";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort, SortDirection } from "@angular/material/sort";
+import { MatTable } from "@angular/material/table";
+import { PublicationService } from "src/app/shared/services/publication.service";
+import { merge, of as observableOf } from "rxjs";
+import { startWith, switchMap, map, catchError, filter } from "rxjs/operators";
+import { environment } from "src/environments/environment";
 
 @Component({
-  selector: 'impc-publication-table',
-  templateUrl: './publication-table.component.html',
-  styleUrls: ['./publication-table.component.scss']
+  selector: "impc-publication-table",
+  templateUrl: "./publication-table.component.html",
+  styleUrls: ["./publication-table.component.scss"]
 })
 export class PublicationTableComponent implements AfterViewInit, OnInit {
-  @ViewChild('paginatorTop', { static: false }) paginatorTop: MatPaginator;
-  @ViewChild('paginatorBottom', { static: false })
+  @ViewChild("paginatorTop", { static: false }) paginatorTop: MatPaginator;
+  @ViewChild("paginatorBottom", { static: false })
   paginatorBottom: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   @ViewChild(MatTable, { static: false }) table: MatTable<Publication>;
-  sortDirection = 'DESC';
+  sortDirection = "DESC";
   sortable = [
-    { value: 'firstPublicationDate', viewValue: 'Publication date' },
-    { value: 'title', viewValue: 'Title' },
-    { value: 'authorList', viewValue: 'First author' },
-    { value: 'keyword', viewValue: 'Matched keyword' },
-    { value: 'journal', viewValue: 'Journal' }
+    { value: "firstPublicationDate", viewValue: "Publication date" },
+    { value: "title", viewValue: "Title" },
+    { value: "authorList", viewValue: "First author" },
+    { value: "keyword", viewValue: "Matched keyword" },
+    { value: "journal", viewValue: "Journal" }
   ];
   sortActive = this.sortable[0].value;
 
@@ -117,7 +117,7 @@ export class PublicationTableComponent implements AfterViewInit, OnInit {
   };
 
   changeDirection() {
-    this.sortDirection = this.sortDirection === 'ASC' ? 'DESC' : 'ASC';
+    this.sortDirection = this.sortDirection === "ASC" ? "DESC" : "ASC";
     this.changeSort();
   }
 
@@ -130,45 +130,35 @@ export class PublicationTableComponent implements AfterViewInit, OnInit {
 
   downloadCsv() {
     this.publicationService
-      .getPublications(0, this.resultsLength, { status: this.status, ...this.filterService.filter })
+      .getPublications(0, this.resultsLength, {
+        status: this.status,
+        ...this.filterService.filter
+      })
       .subscribe(publications => {
         const csvPublications = [];
         publications.forEach(publication => {
           const csvPublication: any = {};
           csvPublication.pmid = publication.pmid;
           csvPublication.title = publication.title;
-          csvPublication.alleles = publication.alleles
-            .map(allele => allele.alleleSymbol)
-            .join('; ');
-          if (publication.orderIds.length > 0) {
-            publication.orderIds.forEach(orderId => {
-              if (orderId === 'null') {
-                return;
-              }
-              const csvRecord = {... csvPublication};
-              csvRecord.orderId = orderId;
-              csvRecord.emmaId = '';
-              csvPublications.push(csvRecord);
-            });
-          }
-          if (publication.emmaIds.length > 0) {
-            publication.emmaIds.forEach(emmaId => {
-              const csvRecord = {... csvPublication};
-              csvRecord.orderId = '';
-              csvRecord.emmaId = emmaId;
-              csvPublications.push(csvRecord);
-            });
-          }
 
-          if (publication.emmaIds.length === 0 && publication.orderIds.length === 0) {
-            csvPublication.orderId = '';
-            csvPublication.emmaId = '';
+          publication.alleles.forEach(allele => {
+            const csvRecord = { ...csvPublication };
+            csvRecord.allele = allele.alleleSymbol;
+            csvRecord.orderId = allele.orderId == null ? "" : allele.orderId;
+            csvRecord.emmaId = allele.emmaId == null ? "" : allele.emmaId;
+            csvPublications.push(csvRecord);
+          });
+
+          if (publication.alleles.length == 0) {
+            csvPublication.allele = "";
+            csvPublication.orderId = "";
+            csvPublication.emmaId = "";
             csvPublications.push(csvPublication);
           }
         });
         const csv = new ngxCsv(csvPublications, `${environment.title} report`, {
           showLabels: true,
-          headers: ['pmid', 'title', 'alleles', 'Order ID', 'EMMA ID']
+          headers: ["pmid", "title", "alleles", "Order ID", "EMMA ID"]
         });
       });
   }

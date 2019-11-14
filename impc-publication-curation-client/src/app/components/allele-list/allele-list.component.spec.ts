@@ -1,16 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { AlleleListComponent } from './allele-list.component';
+import { AlleleListComponent } from "./allele-list.component";
 
-describe('AlleleListComponent', () => {
+describe("AlleleListComponent", () => {
   let component: AlleleListComponent;
   let fixture: ComponentFixture<AlleleListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AlleleListComponent ]
-    })
-    .compileComponents();
+      declarations: [AlleleListComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('AlleleListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

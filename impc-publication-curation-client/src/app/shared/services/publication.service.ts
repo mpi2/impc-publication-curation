@@ -1,12 +1,12 @@
-import { GraphQLResponse } from './../models/publication.model';
-import { Observable, throwError } from 'rxjs';
-import { Injectable, EventEmitter } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
-import { map, catchError } from 'rxjs/operators';
-import { Publication } from '../models/publication.model';
-import { merge, of as observableOf } from 'rxjs';
-import { QueryHelper } from './query.helper.util';
+import { GraphQLResponse } from "./../models/publication.model";
+import { Observable, throwError } from "rxjs";
+import { Injectable, EventEmitter } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { environment } from "../../../environments/environment";
+import { map, catchError } from "rxjs/operators";
+import { Publication } from "../models/publication.model";
+import { merge, of as observableOf } from "rxjs";
+import { QueryHelper } from "./query.helper.util";
 
 @Injectable()
 export class PublicationService {
@@ -21,8 +21,8 @@ export class PublicationService {
     start = 1,
     size = 20,
     filter = {},
-    orderByField = 'firstPublicationDate',
-    orderByDirection = 'DESC'
+    orderByField = "firstPublicationDate",
+    orderByDirection = "DESC"
   ): Observable<Publication[]> {
     const queryHelper = new QueryHelper();
     const query = queryHelper.publicationsQuery(
@@ -35,7 +35,7 @@ export class PublicationService {
     return this.http
       .post(
         environment.publicationsApiUrl,
-        this.constructQuery(query.replace(new RegExp(/\n/, 'g'), ' '))
+        this.constructQuery(query.replace(new RegExp(/\n/, "g"), " "))
       )
       .pipe(
         map((response: GraphQLResponse) =>
@@ -43,8 +43,8 @@ export class PublicationService {
             publication.fragments.forEach(fragment => {
               fragment.mentions.forEach((mention, index) => {
                 fragment.mentions[index] = mention
-                  .replace(new RegExp('<', 'g'), '&lt;')
-                  .replace(new RegExp('>', 'g'), '&gt;');
+                  .replace(new RegExp("<", "g"), "&lt;")
+                  .replace(new RegExp(">", "g"), "&gt;");
               });
             });
             if (publication.citations && publication.citations.length > 0) {
@@ -79,7 +79,7 @@ export class PublicationService {
             ) {
               publication.fullTextUrlList = [
                 {
-                  url: 'https://www.ncbi.nlm.nih.gov/pubmed/' + publication.pmid
+                  url: "https://www.ncbi.nlm.nih.gov/pubmed/" + publication.pmid
                 }
               ];
             }
@@ -98,16 +98,12 @@ export class PublicationService {
 
   setPublicationStatus(
     pmid,
-    status = '',
+    status = "",
     alleles = [],
     consortiumPaper = false,
-    orderIds = [],
-    emmaIds = [],
-    comment = ''
+    comment = ""
   ) {
-    let allelesString = '';
-    let orderIdsString = '';
-    let emmaIdsString = '';
+    let allelesString = "";
     alleles.forEach(allele => {
       const alleleref = Object.assign({}, allele);
       delete alleleref.candidate;
@@ -115,29 +111,23 @@ export class PublicationService {
       allelesString += `{ ${this.objToString(alleleref)} }, `;
     });
     allelesString =
-      '[' + allelesString.substring(0, allelesString.length - 2) + ']';
-    orderIdsString = orderIds.join('\\", \\"');
-    orderIdsString = orderIds.length > 0 ? '[\\"' + orderIdsString + '\\"]' : '[]';
-    emmaIdsString = emmaIds.join('\\", \\"');
-    emmaIdsString = emmaIds.length > 0 ? '[\\"' + emmaIdsString + '\\"]' : '[]';
+      "[" + allelesString.substring(0, allelesString.length - 2) + "]";
     const queryHelper = new QueryHelper();
     const query = queryHelper.setStatusQuery(
       pmid,
       status,
       consortiumPaper,
-      orderIdsString,
-      emmaIdsString,
       allelesString,
       comment
     );
     return this.http
       .post(
         environment.publicationsApiUrl,
-        this.constructQuery(query.replace(new RegExp(/\n/, 'g'), ' '))
+        this.constructQuery(query.replace(new RegExp(/\n/, "g"), " "))
       )
       .pipe(
         map((result: GraphQLResponse) => {
-          if (result.error && result.error.message === 'Access denied') {
+          if (result.error && result.error.message === "Access denied") {
             throwError(result);
           } else {
             this.reloadPublications.emit(true);
@@ -150,18 +140,18 @@ export class PublicationService {
   }
 
   parseFilter(obj) {
-    let str = '';
+    let str = "";
     for (const p in obj) {
       if (obj.hasOwnProperty(p)) {
-        if (obj[p] === null || obj[p] === '' || obj[p].length === 0) {
+        if (obj[p] === null || obj[p] === "" || obj[p].length === 0) {
           continue;
         }
-        if (p === 'provenance') {
-          str += obj[p] + ', ';
-        } else if (p === 'search' || p === 'status') {
+        if (p === "provenance") {
+          str += obj[p] + ", ";
+        } else if (p === "search" || p === "status") {
           str += p + ': \\"' + obj[p] + '\\", ';
-        } else if (p !== 'keywords') {
-          str += p + ': ' + obj[p] + ', ';
+        } else if (p !== "keywords") {
+          str += p + ": " + obj[p] + ", ";
         } else {
           str += p + ': [\\"' + obj[p].join('\\",\\"') + '\\"], ';
         }
@@ -171,11 +161,11 @@ export class PublicationService {
   }
 
   objToString(obj) {
-    let str = '';
+    let str = "";
     for (const p in obj) {
       if (obj.hasOwnProperty(p)) {
-        if (typeof obj[p] === 'boolean') {
-          str += p + ': ' + obj[p] + ', ';
+        if (typeof obj[p] === "boolean") {
+          str += p + ": " + obj[p] + ", ";
         } else {
           str += p + ': \\"' + obj[p] + '\\", ';
         }

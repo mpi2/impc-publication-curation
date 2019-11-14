@@ -13,8 +13,6 @@ export class QueryHelper {
       pmcid
       datasource
       consortiumPaper
-      orderIds
-      emmaIds
       status
       comment
       correspondence {
@@ -28,6 +26,8 @@ export class QueryHelper {
         project
         alleleName
         alleleSymbol
+        orderId
+        emmaId
       }
       fullTextUrlList{
         url
@@ -69,8 +69,6 @@ export class QueryHelper {
     pmid,
     status = 'pending',
     consortiumPaper = false,
-    orderIdsString = '',
-    emmaIdsString = '',
     allelesString = '',
     comment = ''
   ) => `
@@ -80,8 +78,6 @@ export class QueryHelper {
     status: \\"${status}\\",
     alleles: ${allelesString},
     consortiumPaper: ${consortiumPaper},
-    orderIds: ${orderIdsString},
-    emmaIds: ${emmaIdsString},
     comment: \\"${comment ? comment.replace(/\"/gi, '\\\\\\\"') : ''}\\",
     alleleCandidates: []
     ){

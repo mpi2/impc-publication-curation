@@ -1,16 +1,20 @@
 @import "~@fortawesome/fontawesome-free/css/all.css";
 @import "variables";
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .fragment-viewer-stepper > .mat-horizontal-stepper-header-container {
   width: 50%;
   margin-left: auto;
   margin-right: auto;
 }
-
 
 .fragment-viewer-stepper > div > mat-step-header > .mat-step-label {
   display: none;
@@ -23,11 +27,30 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-step-icon-state-edit {
   background-color: rgba(0, 0, 0, 0.54) !important;
 }
-
-mat-icon.fa, mat-icon.fas {
+v mat-icon.fa,
+mat-icon.fas {
   font-size: 20px;
 }
 
-// impc-keyword-list > mat-chip-list > .mat-chip-list-wrapper {
-//   justify-content: center;
-// }
+mat-form-field.infrafrontier-allele-candidate {
+  color: $accent;
+
+  .mat-input-element {
+    color: $accent;
+  }
+  .mat-form-field-label {
+    color: $accent;
+  }
+  .mat-form-field-underline {
+    background-color: $accent;
+  }
+  .mat-form-field-ripple {
+    background-color: $accent;
+  }
+  .mat-form-field-required-marker {
+    color: $accent;
+  }
+  .mat-hint {
+    color: $accent;
+  }
+}

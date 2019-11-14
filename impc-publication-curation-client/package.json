@@ -4,11 +4,12 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start-infrafrontier": "ng serve --configuration=infrafrontier",
     "build": "ng build --prod --base-href /publications/ --deploy-url /publications/",
+    "build-infrafrontier": "ng build --configuration=infrafrontier-prod --base-href /mi/infrafrontier/publications/ --deploy-url /mi/infrafrontier/publications/",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "build-infrafrontier": "ng build --configuration=infrafrontier-prod --base-href /mi/infrafrontier/publications/ --deploy-url /mi/infrafrontier/publications/"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
